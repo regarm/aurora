@@ -1,0 +1,40 @@
+.aoj-code-editor{
+	margin: 10px;
+}
+.ace_editor { 
+	min-height: 400px;
+}
+.code-preference-bar{
+	padding: 20px;
+	min-height: 60px;
+	border: 1px solid #efefef;
+	background-color: white;
+}
+.code-preference-bar select{
+	background-color: white;
+	font-size: 12px;
+	border-width: 1px;
+}
+.code-preference-bar button{
+	background-color: white;	
+	border-width: 1px;
+}
+#submit{
+	margin-left: 20px;
+}
+./* fullScreen .fullScreen-editor{ 
+	height: auto!important;
+	width: auto!important;
+	border: 0;
+    margin: 0;
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+	z-index: 10000
+}
+
+.fullScreen {
+	overflow: hidden
+} */

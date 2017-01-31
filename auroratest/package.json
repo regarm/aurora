@@ -1,0 +1,16 @@
+{
+  "name": "auroratest",
+  "version": "1.0.0",
+  "description": "Simple testing application",
+  "main": "test.js",
+  "dependencies": {
+    "auroradb": "^1.0.0",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Manoj Kumar Regar <regarmanojkumar@gmail.com>",
+  "license": "ISC"
+}

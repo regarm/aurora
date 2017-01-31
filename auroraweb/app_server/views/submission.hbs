@@ -1,0 +1,14 @@
+{{#contentFor 'page-req'}}
+	<script src="/js/submission.js"></script>
+{{/contentFor}}
+<div ng-cloak ng-init="problem.problemCode='{{problemCode}}';contest.contestCode='{{contestCode}}';submission.submissionId='{{submissionId}}'">
+	<div ng-controller="SubmissionController">
+		<div>
+			<ol class="breadcrumb">
+			  <li class="breadcrumb-item"><a href="/[[contest.contestCode]]">[[contest.contestCode]]</a></li>
+			  <li class="breadcrumb-item"><a href="/PRACTICE/[[problem.problemCode]]">[[problem.problemCode]]</a></li>
+			  <li class="breadcrumb-item">[[submission.submissionId]]</li>
+			</ol>
+		</div>
+	</div>
+</div>

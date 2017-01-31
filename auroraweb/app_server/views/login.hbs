@@ -1,0 +1,49 @@
+{{#contentFor 'page-req'}}
+	<script src="/js/login.js"></script>
+{{/contentFor}}
+<div ng-controller="LoginController">
+	<form name="loginForm" class='form-horizontal' role="form" novalidate ng-submit="submit()">
+		<fieldset>
+			<legend>Log In</legend>
+			<div class="alert alert-[[flash.getMessage().type]]" ng-show="flash.getMessage()">
+			  [[flash.getMessage().msg]]
+			</div>
+			<div class="row aoj-block aoj-block-dir-vert aoj-block-align-vert-center">
+				<div class='form-group has-feedback col-md-4 has-feedback-left'>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-user"></span>
+						</div>
+						<input class='form-control input-lg' type="text" placeholder="handle" name="handle" ng-model="login.handle" ng-pattern="/^[a-zA-Z0-9_]*$/" ensure-exists="[[login.handle]]" ng-maxlength=20 required>
+					</div>
+					<div class="error" ng-show="loginForm.handle.$dirty&&loginForm.handle.$invalid">
+						<small class="error" ng-show="loginForm.handle.$error.required">Handle is required.</small>
+						<small class="error" ng-show="loginForm.handle.$error.exists">Handle does not exist.</small>
+						<small class="error" ng-show="loginForm.handle.$error.pattern">Handle must consist of alphanumeric characters and underscore.</small>
+						<small class="error" ng-show="loginForm.handle.$error.maxlength">Handle's length should be less than 20.</small>
+					</div>
+				</div>
+
+				<div class='form-group has-feedback col-md-4 has-feedback-left'>
+					<div class="input-group">
+						<div class="input-group-addon">
+							<span class="glyphicon glyphicon-lock"></span>
+						</div>
+						<input class='form-control input-lg' type="password" placeholder="*********" name="password" ng-model="login.password" ng-minlength=6 required>
+					</div>
+					<div class="error" ng-show="loginForm.password.$dirty&&loginForm.password.$invalid">
+						<small class="error" ng-show="loginForm.password.$error.required">Password is required.</small>
+						<small class="error" ng-show="loginForm.password.$error.minlength">Password's length should be at least 6.</small>
+					</div>
+				</div>
+
+				<div class="col-md-12">
+					<hr/>
+				</div>
+				<div class='form-group'>
+					<button class="btn btn-primary btn-large aoj-button-green" name="submit" type="submit" ng-disabled="loginForm.$invalid">Submit</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+</div>

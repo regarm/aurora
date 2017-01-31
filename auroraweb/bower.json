@@ -1,0 +1,32 @@
+{
+  "name": "auroraweb",
+  "description": "Web interface for aurora online judge",
+  "main": "",
+  "authors": [
+    "Manoj Kumar Regar <regarmanojkumar@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/regarmanojkumar/auroraweb",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.1",
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.1.1",
+    "components-font-awesome": "^4.7.0",
+    "angular-route": "^1.6.1",
+    "ace": "^1.2.6",
+    "angular-ui-ace": "bower",
+    "angular-screenfull": "^0.1.1",
+    "angular-datatables": "~0.5.6",
+    "angular-smart-table": "^2.1.8"
+  },
+  "resolutions": {
+    "angular-datatables": "~0.5.6"
+  }
+}

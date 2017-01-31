@@ -1,0 +1,83 @@
+{{#contentFor 'page-req'}}
+	<script src="/bower_components/angular-route/angular-route.js"></script>
+	<script type="text/javascript" src="/bower_components/ace-builds/src-min-noconflict/ace.js"></script>
+	<script type="text/javascript" src="/bower_components/angular-ui-ace/ui-ace.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/code-editor.css">
+	<!-- <script src="/js/angular-fullscreen.js"></script> -->
+	<script src="/bower_components/screenfull/dist/screenfull.js"></script>
+	<script src="/bower_components/angular-screenfull/dist/angular-screenfull.min.js"></script>
+	<script src="/js/problem.js"></script>
+
+{{/contentFor}}
+<div ng-cloak ng-init="problem.problemCode='{{problemCode}}';contest.contestCode='{{contestCode}}'">
+	<div ng-controller="ProblemController" id="temp">
+		<div>
+			<ol class="breadcrumb">
+			  <li class="breadcrumb-item"><a href="/[[contest.contestCode]]">[[contest.contestName]]</a></li>
+			  <li class="breadcrumb-item">[[problem.problemName]]</li>
+			</ol>
+		</div>
+		<nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar1" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+
+          <div class="collapse navbar-collapse" id="navbar1">
+            <ul class="nav navbar-nav navbar-left">
+              <li><a href="#!problem" ng-class="{active: isActive('/problem')}">Problem</a></li>
+				<li><a href="#!editorial" ng-class="{active: isActive('/editorial')}">Editorial</a></li>
+				<li><a href="#!msubs" ng-class="{active: isActive('/msubs')}">My Submissions</a></li>
+				<li><a href="#!asubs" ng-class="{active: isActive('/asubs')}">All Submissions</a></li>
+				<li><a href="#!submit" ng-class="{active: isActive('/submit')}">Submit</a></li>
+            </ul>
+          </div>
+        </div>
+
+		<div ng-view></div>
+		<script type="text/ng-template" id="problem.htm">
+			<div class="view-container">
+				<div class="col-md-8 aoj-view-left-pane aoj-problemStmt" ng-bind-html="problem.problemStmt"></div>
+				<div class="col-md-3 col-md-offset-1 aoj-view-right-pane"></div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="editorial.htm">
+			<div class="view-container col-md-12">
+				<h2> editorial </h2>	
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="msubs.htm">
+			<div class="view-container col-md-12">
+				<h2> msubs </h2>	
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="asubs.htm">
+			<div class="view-container col-md-12">
+				<h2> asubs </h2>
+			</div>
+		</script>
+		<script type="text/ng-template" id="submit.htm">
+		<div class="container view-container aoj-code-editor col-md-10" ngsf-fullscreen>
+			<div class="row">
+				<div class="code-preference-bar">
+					<div class="pull-right">
+						<select data-ng-model="selectedTheme" data-ng-options="option.themeName for option in themeData track by option.id"></select>
+						<button ngsf-toggle-fullscreen><i class="fa fa-expand" aria-hidden="true"></i></button>
+						<button class="aoj-button btn-sm aoj-button-white" id="submit" ng-click="submit()">Submit</button>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="editor" ui-ace="{onLoad: aceLoaded}" ng-model="code"></div>
+			</div>
+		</div>
+		</script>
+	</div>
+</div>

@@ -1,0 +1,25 @@
+{
+  "name": "auroradb",
+  "version": "1.0.0",
+  "description": "Database Interface for Aurora Online Judge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/regarmanojkumar/auroradb.git"
+  },
+  "keywords": [],
+  "author": "Manoj Kumar Regar <regarmanojkumar@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/regarmanojkumar/auroradb/issues"
+  },
+  "homepage": "https://github.com/regarmanojkumar/auroradb#readme",
+  "dependencies": {
+    "async": "^2.1.4",
+    "mongodb": "^2.2.21"
+  },
+  "devDependencies": {}
+}

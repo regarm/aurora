@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html ng-app="aojApp">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}</title>
+
+  <!-- Global Loads -->
+  <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/js/jumpstart.js"></script>
+  <script src="/js/apiAccessTools.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/theme.css">
+  <link rel="stylesheet" type="text/css" href="/css/sticky-footer.css">
+  {{!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
+  <link rel="stylesheet" type="text/css" href="/bower_components/components-font-awesome/css/font-awesome.min.css">
+
+  {{{block "page-req"}}}
+
+</head>
+<body>
+  <div class="aoj-container container" ng-cloak>
+    <div class="aoj-header">
+      <div class="container aoj-user-nav">
+        <div class="row pull-right" ng-show="!session.loggedIn">
+          <a href="/login" class="btn btn-primary aoj-button aoj-button-green btn-sm" role="button" aria-disabled="true">Login</a>
+          <a href="/register" class="btn btn-primary aoj-button aoj-button-white btn-sm" role="button" aria-disabled="true">Sign Up</a>
+        </div>
+      </div>
+      <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/"><img class="aoj-header__logo" src="/img/favicon.png" width="128" height="128">Aurora</a>
+          </div>
+
+          <div class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/PRACTICE">Problems</a></li>
+              <li><a href="/contests">Contests</a></li>
+              <li><a href="/submissions">Submissions</a></li>
+              <li class="dropdown" ng-show="session.loggedIn">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">[[session.handle]]
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/profile/[[session.handle]]">Profile</a></li>
+                  <li><a ng-click="logout()">Log out</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <div class="aoj-body">
+      {{{body}}}
+    </div>
+  </div>
+  <footer class="footer aoj-footer">
+    <div class="container full-height">
+      <div class="row full-height">
+        <div class="col-xs-12 full-height">
+          <div class="aoj-footer__menu_left hidden-xs">
+              <!-- <a class="link-footer aoj-footer__menu-item" href="https://robomongo.org/download">Download</a></li> -->
+              <a class="link-footer aoj-footer__menu-item" href="https://github.com/regarmanojkumar/auroraweb" target="_blank">
+                <i class="fa fa-github fa-lg" aria-hidden="true"></i>
+              </a>
+          </div>
+          <div class="aoj-footer__menu_right">
+              <a class="link-footer" href="http://icpc.baylor.edu" target="_blank">
+                <img class="icpc-icon-footer img-fluid" src="/img/win_icpc.png" height="50" width="50">
+              </a>
+              <a class="link-footer aoj-footer__menu-item" href="http://bitmesra.acm.org" target="_blank">
+                <img class="img-fluid" src="/img/acm_logo.png" alt="ACM BIT Mesra" width="50" height="50" align="middle">
+              </a>
+              <a class="link-footer aoj-footer__menu-item" href="http://fb.com/groups/acmbitm"><i class="fa fa-facebook fa-2x" aria-hidden="true"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
