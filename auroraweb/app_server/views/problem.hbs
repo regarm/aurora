@@ -7,7 +7,8 @@
 	<script src="/bower_components/screenfull/dist/screenfull.js"></script>
 	<script src="/bower_components/angular-screenfull/dist/angular-screenfull.min.js"></script>
 	<script src="/js/problem.js"></script>
-
+	<script src="/bower_components/ckeditor/ckeditor.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/loader.css">
 {{/contentFor}}
 <div ng-cloak ng-init="problem.problemCode='{{problemCode}}';contest.contestCode='{{contestCode}}'">
 	<div ng-controller="ProblemController" id="temp">
@@ -33,7 +34,8 @@
 				<li><a href="#!editorial" ng-class="{active: isActive('/editorial')}">Editorial</a></li>
 				<li><a href="#!msubs" ng-class="{active: isActive('/msubs')}">My Submissions</a></li>
 				<li><a href="#!asubs" ng-class="{active: isActive('/asubs')}">All Submissions</a></li>
-				<li><a href="#!submit" ng-class="{active: isActive('/submit')}">Submit</a></li>
+				<li><a href="#!submit" ng-class="{active: isActive('/submit')}">Editor</a></li>
+				<li><a href="#!problemEdit" ng-class="{active: isActive('/problemEdit')}">Edit problem</a></li>
             </ul>
           </div>
         </div>
@@ -53,14 +55,54 @@
 		</script>
 
 		<script type="text/ng-template" id="msubs.htm">
-			<div class="view-container col-md-12">
-				<h2> msubs </h2>	
+			<div class="container view-container">
+				<div class="col-md-11 aoj-view-left-pane aoj-submissions-list-display">
+					<table  class='row-border hover table table-hover'>
+				        <thead>
+				        	<tr>
+						        <th>Submission id</th>
+					        	<th>Submitted</th>
+					        	<th>Handle</th>
+					            <th>Contest/Problem</th>
+					            <th>Verdict</th>
+					            <th>Score</th>
+					            <th>Time</th>
+					            <th>Memory</th>
+					            <th>Lang</th>
+					            <th>Solution</th>
+					        </tr>
+				        </thead>
+				        <tbody>
+					        <tr submission-list-display ng-repeat="submission in submissionsList" contest-code="submission.contestCode" problem-code="submission.problemCode" submission-id="submission.submissionId" session="session"> </tr>
+				        </tbody>
+				    </table>
+				</div>
 			</div>
 		</script>
 
 		<script type="text/ng-template" id="asubs.htm">
-			<div class="view-container col-md-12">
-				<h2> asubs </h2>
+			<div class="container view-container">
+				<div class="col-md-11 aoj-view-left-pane aoj-submissions-list-display">
+					<table  class='row-border hover table table-hover'>
+				        <thead>
+				        	<tr>
+						        <th>Submission id</th>
+					        	<th>Submitted</th>
+					        	<th>Handle</th>
+					            <th>Contest/Problem</th>
+					            <th>Verdict</th>
+					            <th>Score</th>
+					            <th>Time</th>
+					            <th>Memory</th>
+					            <th>Lang</th>
+					            <th>Solution</th>
+					        </tr>
+				        </thead>
+				        <tbody>
+					        <tr submission-list-display ng-repeat="submission in submissionsList" contest-code="submission.contestCode" problem-code="submission.problemCode" submission-id="submission.submissionId" > </tr>
+				        </tbody>
+				    </table>
+				</div>
 			</div>
 		</script>
 		<script type="text/ng-template" id="submit.htm">
@@ -77,6 +119,29 @@
 			<div class="row">
 				<div class="editor" ui-ace="{onLoad: aceLoaded}" ng-model="code"></div>
 			</div>
+		</div>
+		</script>
+		<script type="text/ng-template" id="problemEdit.htm">
+		<div class="container view-container col-md-10">
+			<br/>
+			<input class='form-control input-sm col-md-4' type="text" name="problemCode" disabled ng-bind="problem.problemCode">
+			<input class='form-control input-sm col-md-4' type="text" name="problemCode" disabled ng-bind="contest.contestCode">
+			<br/>
+			<h4> Problem Statement </h4>
+			<textarea name="problemEditor" id="problemEditor" rows="10" cols="80" ng-bind-html="problem.problemStmt">
+                This is my textarea to be replaced with CKEditor.
+            </textarea>
+            <br/>
+            <div class="row">
+		        <button class="btn btn-primary btn-large aoj-button-green pull-left" name="updateProblemStmt" type="submit" ng-click="updateProblemStmtAction()" ng-disabled="updateProblemStmt.loading">Update Problem Statement</button>
+		        <div class="loader pull-left" ng-show="updateProblemStmt.loading" style="padding-left: 10px"></div>
+		        <div class="pull-left"><span style="padding-left: 10px" ng-bind="updateProblemStmt.status"></span></div>
+            </div>
+            <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'problemEditor' );
+            </script>
 		</div>
 		</script>
 	</div>

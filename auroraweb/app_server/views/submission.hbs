@@ -1,5 +1,9 @@
 {{#contentFor 'page-req'}}
 	<script src="/js/submission.js"></script>
+	<script src="/bower_components/prism/prism.js"></script>
+	<link rel="stylesheet" type="text/css" href="/bower_components/prism/themes/prism-okaidia.css">
+	{{!-- // <script src="/bower_components/prism/plugins/line-numbers/prism-line-numbers.min.js"></script> --}}
+	{{!-- <link rel="stylesheet" type="text/css" href="/bower_components/prism/plugins/line-numbers/prism-line-numbers.css"> --}}
 {{/contentFor}}
 <div ng-cloak ng-init="problem.problemCode='{{problemCode}}';contest.contestCode='{{contestCode}}';submission.submissionId='{{submissionId}}'">
 	<div ng-controller="SubmissionController">
@@ -9,6 +13,12 @@
 			  <li class="breadcrumb-item"><a href="/PRACTICE/[[problem.problemCode]]">[[problem.problemCode]]</a></li>
 			  <li class="breadcrumb-item">[[submission.submissionId]]</li>
 			</ol>
+		</div>
+		<div class="container view-container">
+			<div class="col-md-10 aoj-view-left-pane aoj-solution-display parentScroll">
+				<pre class="line-numbers"><code class="language-cpp">[[submission.solution]]</code></pre>
+			</div>
+			<div class="col-md-2 col-md-offset-1 aoj-view-right-pane"></div>
 		</div>
 	</div>
 </div>

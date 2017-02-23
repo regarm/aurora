@@ -9,6 +9,7 @@ var middle = require('../app_server/middleware/index');
 router.get('/', view.home);
 router.get('/login', view.login);
 router.get('/contests', view.contestList);
+router.get('/submissions', view.submissionsList);
 
 router.use('/:contestCode', require('./viewcontestr'));
 module.exports = router;

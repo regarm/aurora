@@ -21,7 +21,12 @@ select:-moz-focusring
     color: transparent;
     text-shadow: 0 0 0 #000;
 }
-
+::-webkit-scrollbar { 
+    display: none; 
+}
+.parentScroll{
+    overflow: hidden;
+}
 /** aoj-container */
 #aoj-container
 {
@@ -46,6 +51,10 @@ select:-moz-focusring
     width: 30px;
     height: 30px;
     margin-right: 7px;
+}
+.beta {
+    font-size: 20px;
+    color: #5A3300;
 }
 .navbar.navbar-default
 {
@@ -159,7 +168,7 @@ select:-moz-focusring
     width: 100%;
 
     color: white;
-    background-color: #966f33;
+    background-color: rgba(66, 65, 76, 0.8);
 }
 .aoj-footer__menu_right,
 .aoj-footer__menu_left
@@ -300,4 +309,23 @@ select:-moz-focusring
     font-size: 12px;
     border: 1px solid #e5e5e5;
     border-radius: 4px;
+}
+.aoj-solution-display{
+    overflow: scroll;
+    background-color: white;
+    max-height: 1300px;
+    word-wrap: normal;
+}
+.aoj-solution-display pre{
+    word-wrap: normal;
+    background-color: white;
+}
+
+.aoj-submissions-list-display{
+    font-size: 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;   
+}
+.aoj-submission-bar-id{
+    text-align: justify;
 }

@@ -2,8 +2,8 @@ var db = require('auroradb');
 module.exports = function(req, res, next){
 	var contestCode = req.params.contestCode;
 	var problemCode = req.params.problemCode;
-	db.problem.problemScores({problemCode: problemCode}, function (err, scores){
+	db.problem.problemTasks({contestCode: req.params.contestCode, problemCode: problemCode}, function (err, tasks){
 		if(err) return next(err);
-		res.send({success: true, scores: scores});
+		res.send({success: true, tasks: tasks});
 	})
 };

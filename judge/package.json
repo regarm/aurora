@@ -1,0 +1,29 @@
+{
+  "name": "judge",
+  "version": "1.0.0",
+  "description": "Judge for Aurora",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/regarmanojkumar/aurora.git"
+  },
+  "keywords": [
+    "judge",
+    "aurora"
+  ],
+  "author": "Manoj Kumar Regar <regarmanojkumar@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/regarmanojkumar/aurora/issues"
+  },
+  "homepage": "https://github.com/regarmanojkumar/aurora#readme",
+  "dependencies": {
+    "async": "^2.1.4",
+    "request": "^2.79.0",
+    "ws": "^2.0.0"
+  }
+}

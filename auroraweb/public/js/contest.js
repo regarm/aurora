@@ -17,13 +17,13 @@ aojApp.directive('problemInfoDisplay', function() {
 			$scope.contest = {};
 			$scope.contest.contestCode = $scope.contestCode;
 			fetchProblemName($scope, $http, flash);
-			fetchProblemScores($scope, $http, flash);
+			fetchProblemTasks($scope, $http, flash);
 		},
 		replace: true,
 		template: '<tr> \
 		<td><a href="/[[contest.contestCode]]/[[problem.problemCode]]">[[problem.problemCode]]</a></td>\
 		<td><a href="/[[contest.contestCode]]/[[problem.problemCode]]">[[problem.problemName]]</a></td> \
-		<td>[[scoreSum(problem.scores)]]</td> \
+		<td>[[scoreSum(problem.tasks)]]</td> \
 		<td>22/22</td>\
 		</tr>',
 	};

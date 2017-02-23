@@ -9,8 +9,17 @@ exports = module.exports = {
 	submit: require('./apic/submit'),
 	getContestProblemsList: require('./apic/getContestProblemsList'),
 	n404: require('./apic/n404'),
-	getProblemScores: require('./apic/getProblemScores'),
+	getProblemTasks: require('./apic/getProblemTasks'),
 	getContestList: require('./apic/getContestList'),
 	getContestEndTimes: require('./apic/getContestEndTimes'),
-	contestExistance: require('./apic/contestExistance')
+	contestExistance: require('./apic/contestExistance'),
+	getSolution: require('./apic/getSolution'),
+	getSubmissionsList: require('./apic/getSubmissionsList'),
+	getSubmissionSubmittedTime: require('./apic/getSubmissionSubmittedTime'),
+	getSubmissionOverAllResult: require('./apic/getSubmissionOverAllResult'),
+	getSubmissionLang: require('./apic/getSubmissionLang'),
+	getLang: require('./apic/getLang'),
+	getSubmissionHandle: require('./apic/getSubmissionHandle'),
+	fetchFile: require('./apic/fetchFile'),
+	updateProblemStmt: require('./apic/updateProblemStmt')
 }

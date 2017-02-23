@@ -13,7 +13,11 @@ router.use('/:problemCode', require('./viewproblemr'));
 
 router.use(function(err, req, res, next) {
 	//bypassed
-	err = null;
-	next();
+	if((!err) || (err && err.status === 404)){
+		err = null;
+		next();
+	} else{
+		next(err);
+	}
 });
 module.exports = router;

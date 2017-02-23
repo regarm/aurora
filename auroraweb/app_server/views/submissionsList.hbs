@@ -1,0 +1,35 @@
+{{#contentFor 'page-req'}}
+	<script src="/js/submissionsList.js"></script>
+{{/contentFor}}
+<div ng-cloak >
+	<div ng-controller="SubmissionsListController">
+		<div>
+			<ol class="breadcrumb">
+			  <li class="breadcrumb-item">All submissions</li>
+			</ol>
+		</div>
+		<div class="container view-container">
+			<div class="col-md-11 aoj-view-left-pane aoj-submissions-list-display">
+				<table  class='row-border hover table table-hover'>
+			        <thead>
+			        	<tr>
+					        <th>Submission id</th>
+				        	<th>Submitted</th>
+				        	<th>Handle</th>
+				            <th>Contest/Problem</th>
+				            <th>Verdict</th>
+				            <th>Score</th>
+				            <th>Time</th>
+				            <th>Memory</th>
+				            <th>Lang</th>
+				            <th>Solution</th>
+				        </tr>
+			        </thead>
+			        <tbody>
+				        <tr submission-list-display ng-repeat="submission in submissionsList" contest-code="submission.contestCode" problem-code="submission.problemCode" submission-id="submission.submissionId" > </tr>
+			        </tbody>
+			    </table>
+			</div>
+		</div>
+	</div>
+</div>

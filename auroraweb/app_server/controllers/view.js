@@ -5,4 +5,5 @@ exports = module.exports = {
 	submission: require('./viewsc/submission'),
 	contest: require('./viewsc/contest'),
 	contestList: require('./viewsc/contestList'),
+	submissionsList: require('./viewsc/submissionsList')
 }

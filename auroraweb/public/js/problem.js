@@ -20,16 +20,23 @@ aojApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $
 	})
 	.when('/msubs', {
 	   templateUrl: 'msubs.htm',
-	   activetab: 'msubs'
+	   activetab: 'msubs',
+	   controller: 'MSubsViewController'
 	})
 	.when('/asubs', {
 	   templateUrl: 'asubs.htm',
-	   activetab: 'asubs'
+	   activetab: 'asubs',
+	   controller: 'ASubsViewController'
 	})
 	.when('/submit', {
 	   templateUrl: 'submit.htm',
 	   activetab: 'submit',
 	   controller: 'SubmitViewController'
+	})
+	.when('/problemEdit', {
+		templateUrl: 'problemEdit.htm',
+		activetab: 'problemEdit',
+		controller: 'ProblemEditController'
 	})
 	.otherwise({
 	   redirectTo: '/problem'
@@ -99,6 +106,72 @@ aojApp.controller('SubmitViewController', function($scope, $http, $window, flash
 	$scope.submit = function (){
 		console.log('Trying to send submission ...');
 		sendSubmission($scope, $http, $window, flash);
+	}
+})
+aojApp.controller('ASubsViewController', function($scope, $http, $sce, flash){
+	console.log('Fetching asubs of problem');
+	fetchASubsList($scope, $http, $sce, flash);
+})
+aojApp.controller('MSubsViewController', function($scope, $http, $sce, flash){
+	console.log('Fetching msubs of problem');
+	$scope.$watch('session', function (){
+		fetchMSubsList($scope, $http, $sce, flash);
+	});
+})
+aojApp.directive('submissionListDisplay', function() {
+	return {
+		restrict: 'A',
+		scope: {
+			contestCode: "=",
+			submissionId: "=",
+			problemCode: "=",
+			session: "="
+		},
+		controller: function ($scope, $http, flash){
+			$scope.submission = {};
+			$scope.submission.contestCode = $scope.contestCode;
+			$scope.submission.problemCode = $scope.problemCode;
+			$scope.submission.submissionId = $scope.submissionId;
+			fetchSubmissionSubmittedTime($scope, $http, flash);
+			fetchSubmissionOverAllResult($scope, $http, flash);
+			fetchSubmissionLang($scope, $http, flash);
+			$scope.$watch('submission.lang', function (){
+				$scope.lang = $scope.submission.lang;
+				fetchLang($scope, $http, flash);
+			});
+			fetchSubmissionHandle($scope, $http, flash);
+		},
+		replace: true,
+		template: '<tr> \
+			<td class="aoj-submission-bar-id"> <a href="/[[submission.contestCode]]/[[submission.problemCode]]/[[submission.submissionId]]">[[submission.submissionId | limitTo : 7]]... </a> </td>\
+			<td> [[submission.submitted | date : "EEE, d MMM yyyy, hh:mm:ss a (IST)" : \'+530\']] </td> \
+			<td> [[submission.handle]] </td>\
+			<td> <a href="/[[submission.contestCode]]">[[submission.contestCode]]</a> / <a href="/[[submission.contestCode]]/[[submission.problemCode]]">[[submission.problemCode]]</a></td>\
+			<td> [[submission.overAllResult.verdict]] </td>\
+			<td> [[submission.overAllResult.score]] </td>\
+			<td> [[submission.overAllResult.timeTaken]] </td>\
+			<td> [[submission.overAllResult.memoryTaken]] </td>\
+			<td> [[lang.name]] </td>\
+			<td> <a href="/[[submission.contestCode]]/[[submission.problemCode]]/[[submission.submissionId]]"> view </a> </td>\
+		</tr>',
+	};
+})
+aojApp.controller('ProblemEditController', function($scope, $http, $sce, flash){
+	fetchProblemStmt($scope, $http, $sce, flash);
+	$scope.updateProblemStmt = {};
+	$scope.updateProblemStmtAction = function (){
+		$scope.updateProblemStmt.loading = true;
+		$scope.updateProblemStmt.status = "";
+		updateProblemStmt($scope, $http, $sce, flash);
+		$scope.$watch('updateProblemStmt.loading', function(newVal, oldVal){
+			if(newVal == false){
+				if($scope.updateProblemStmt.success){
+					$scope.updateProblemStmt.status = "Successfull !"
+				} else {
+					$scope.updateProblemStmt.status = "Failed !"
+				}
+			}
+		})
 	}
 })
 angular.module("aojApp").requires.push('child-app');

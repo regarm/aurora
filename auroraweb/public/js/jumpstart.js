@@ -10,11 +10,11 @@ aojApp.run(function($rootScope, $http, $window, flash){
     console.log('Trying logging out');
     logout($rootScope, $http, $window, flash);
   }
-  $rootScope.scoreSum = function scoreSum(scoreArray){
-    if(!scoreArray) return 0;
+  $rootScope.scoreSum = function scoreSum(tasks){
+    if(!tasks) return 0;
     var total = 0;
-    for(count=0;count<scoreArray.length;count++){
-      total += scoreArray[count];
+    for(count=0;count<tasks.length;count++){
+      total += tasks[count].score;
     }
     return total;
   }

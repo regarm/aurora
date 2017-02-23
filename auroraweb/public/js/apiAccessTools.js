@@ -13,13 +13,14 @@ function fetchProblemName($scope, $http, flash){
     }
   )
 }
-function fetchProblemScores($scope, $http, flash){
+function fetchProblemTasks($scope, $http, flash){
   console.log('Requesting problem ' + $scope.problem.problemCode + ' score ...');
-  $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/getProblemScores')
+  $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/getProblemTasks')
   .then(
     function success(response){
       if(response.data.success){
-        $scope.problem.scores = response.data.scores;
+        console.log(response.data);
+        $scope.problem.tasks = response.data.tasks;
       } 
     },
     function error(response){
@@ -40,6 +41,24 @@ function fetchProblemStmt($scope, $http, $sce, flash){
   )
 }
 
+
+function updateProblemStmt($scope, $http, $sce, flash){
+  var data = {};
+  data.problemStmt = CKEDITOR.instances.problemEditor.getData();
+  $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/updateProblemStmt', data)
+  .then(
+    function success(response){
+      $scope.problem.problemStmt = $sce.trustAsHtml(data.problemStmt);
+      $scope.updateProblemStmt.loading = false;
+      $scope.updateProblemStmt.success = true;
+    },
+    function error(response){
+      $scope.updateProblemStmt.loading = false;
+      $scope.updateProblemStmt.success = false;
+      console.log(response.data);
+    }
+  )
+}
 /****/
 
 /** Contest Tools */
@@ -90,6 +109,129 @@ function fetchContestEndTimes($scope, $http, flash){
       if(response.data.success){
         $scope.contest.startTime = new Date(response.data.endTimes.startTime);
         $scope.contest.endTime = new Date(response.data.endTimes.endTime);
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+/****/
+
+/*** Submission tools **/
+function fetchSolution($scope, $http, $sce, flash){
+  console.log('Fetching solution ...');
+  $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/' + $scope.submission.submissionId +  '/getSolution')
+  .then(
+    function success(response){
+      if(response.data.success){
+        $scope.submission.solution = response.data.solution;
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+function fetchSubmissionsList($scope, $http, flash){
+  console.log('Fetching All submissions ...');
+  $http.post('/api/getSubmissionsList')
+  .then(
+    function success(response){
+      if(response.data.success){
+        console.log(response.data);
+        $scope.submissionsList = response.data.submissionsList;
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+function fetchASubsList($scope, $http, flash){
+  console.log('Fetching All submissions ...');
+  $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/getSubmissionsList')
+  .then(
+    function success(response){
+      if(response.data.success){
+        console.log(response.data);
+        $scope.submissionsList = response.data.submissionsList;
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+function fetchMSubsList($scope, $http, flash){
+  if(!$scope.session) return ;
+  console.log('Fetching All submissions ...');
+  $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/getSubmissionsList', {handle: $scope.session.handle})
+  .then(
+    function success(response){
+      if(response.data.success){
+        console.log(response.data);
+        $scope.submissionsList = response.data.submissionsList;
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+function fetchSubmissionSubmittedTime($scope, $http, flash){
+  console.log('Fetching submission time of : %s', $scope.submission.submissionId);
+  var url = '/api/' + $scope.submission.contestCode + '/' + $scope.submission.problemCode + '/' + $scope.submission.submissionId +  '/getSubmissionSubmittedTime';
+  $http.post(url)
+  .then(
+    function success(response){
+      if(response.data.success){
+        $scope.submission.submitted = new Date(response.data.submitted);
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+function fetchSubmissionOverAllResult($scope, $http, flash){
+  console.log('Fetching overall result of : %s', $scope.submission.submissionId);
+  var url = '/api/' + $scope.submission.contestCode + '/' + $scope.submission.problemCode + '/' + $scope.submission.submissionId +  '/getSubmissionOverAllResult';
+  $http.post(url)
+  .then(
+    function success(response){
+      if(response.data.success){
+        $scope.submission.overAllResult = response.data.overAllResult;
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+function fetchSubmissionLang($scope, $http, flash){
+  console.log('Fetching language of : %s', $scope.submission.submissionId);
+  var url = '/api/' + $scope.submission.contestCode + '/' + $scope.submission.problemCode + '/' + $scope.submission.submissionId +  '/getSubmissionLang';
+  $http.post(url)
+  .then(
+    function success(response){
+      if(response.data.success){
+        $scope.submission.lang = response.data.lang;
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+function fetchSubmissionHandle($scope, $http, flash){
+  console.log('Fetching handle for the ubmission: %s', $scope.submission.submissionId);
+  var url = '/api/' + $scope.submission.contestCode + '/' + $scope.submission.problemCode + '/' + $scope.submission.submissionId +  '/getSubmissionHandle';
+  $http.post(url)
+  .then(
+    function success(response){
+      if(response.data.success){
+        $scope.submission.handle = response.data.handle;
       }
     },
     function error(response){
@@ -152,3 +294,22 @@ function sendSubmission($scope, $http, $window, flash){
   )
 }
 /****/
+
+/****/
+function fetchLang($scope, $http, flash){
+  if(!$scope.lang) return ;
+  console.log('Fetching language info of : %s', $scope.lang.langId);
+  var url = '/api/getLang/' + $scope.lang.langId;
+  $http.post(url)
+  .then(
+    function success(response){
+      if(response.data.success){
+        $scope.lang = response.data.lang;
+      }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+/**/
