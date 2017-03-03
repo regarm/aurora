@@ -8,6 +8,7 @@
 	<script src="/bower_components/angular-screenfull/dist/angular-screenfull.min.js"></script>
 	<script src="/js/problem.js"></script>
 	<script src="/bower_components/ckeditor/ckeditor.js"></script>
+	<script src="/bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/css/loader.css">
 {{/contentFor}}
 <div ng-cloak ng-init="problem.problemCode='{{problemCode}}';contest.contestCode='{{contestCode}}'">
@@ -109,6 +110,9 @@
 		<div class="container view-container aoj-code-editor col-md-10" ngsf-fullscreen>
 			<div class="row">
 				<div class="code-preference-bar">
+					<div class="pull-left">
+						<select data-ng-model="selectedLang" data-ng-options="option.name for option in langs track by option.langId"></select>
+					</div>
 					<div class="pull-right">
 						<select data-ng-model="selectedTheme" data-ng-options="option.themeName for option in themeData track by option.id"></select>
 						<button ngsf-toggle-fullscreen><i class="fa fa-expand" aria-hidden="true"></i></button>
@@ -124,8 +128,14 @@
 		<script type="text/ng-template" id="problemEdit.htm">
 		<div class="container view-container col-md-10">
 			<br/>
-			<input class='form-control input-sm col-md-4' type="text" name="problemCode" disabled ng-bind="problem.problemCode">
-			<input class='form-control input-sm col-md-4' type="text" name="problemCode" disabled ng-bind="contest.contestCode">
+			<div class="row">
+				<div class="col-md-3">
+					<input class='form-control' type="text" disabled ng-model="problem.problemCode">
+				</div>
+				<div class="col-md-3">
+					<input class='form-control' type="text" disabled ng-model="contest.contestCode">
+				</div>
+			</div>
 			<br/>
 			<h4> Problem Statement </h4>
 			<textarea name="problemEditor" id="problemEditor" rows="10" cols="80" ng-bind-html="problem.problemStmt">
@@ -137,6 +147,9 @@
 		        <div class="loader pull-left" ng-show="updateProblemStmt.loading" style="padding-left: 10px"></div>
 		        <div class="pull-left"><span style="padding-left: 10px" ng-bind="updateProblemStmt.status"></span></div>
             </div>
+            <br/>
+            <br/>
+            {{> taskEdit}}
             <script>
                 // Replace the <textarea id="editor1"> with a CKEditor
                 // instance, using default configuration.

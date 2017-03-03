@@ -1,4 +1,4 @@
-var aojApp = angular.module('child-app', ['ngRoute', 'ui.ace', 'angularScreenfull']);
+var aojApp = angular.module('child-app', ['ngRoute', 'ui.ace', 'angularScreenfull', 'angularFileUpload']);
 aojApp.controller('ProblemController', function($scope, $http, $location, flash){
 	fetchProblemName($scope, $http, flash);
 	fetchContestName($scope, $http, flash);
@@ -103,6 +103,12 @@ aojApp.controller('SubmitViewController', function($scope, $http, $window, flash
 			_editor.setTheme('ace/theme/' + $scope.selectedTheme.themeCode);
 		});
 	}
+	fetchLangs($scope, $http, $window, flash);
+	$scope.$watch('langs', function (newVal, oldVal){
+		if($scope.langs && $scope.langs.length){
+			$scope.selectedLang = $scope.langs[0];
+		}
+	});
 	$scope.submit = function (){
 		console.log('Trying to send submission ...');
 		sendSubmission($scope, $http, $window, flash);
@@ -158,6 +164,7 @@ aojApp.directive('submissionListDisplay', function() {
 })
 aojApp.controller('ProblemEditController', function($scope, $http, $sce, flash){
 	fetchProblemStmt($scope, $http, $sce, flash);
+	fetchProblemTasks($scope, $http, $sce, flash);
 	$scope.updateProblemStmt = {};
 	$scope.updateProblemStmtAction = function (){
 		$scope.updateProblemStmt.loading = true;
@@ -172,6 +179,55 @@ aojApp.controller('ProblemEditController', function($scope, $http, $sce, flash){
 				}
 			}
 		})
+	}
+})
+
+aojApp.controller('UploadController', function($attrs, $scope, FileUploader) {
+    $scope.uploader = new FileUploader({url: '/api/fileUpload'});
+    $scope.alert = function (param){
+    	console.log(param);
+    }
+    $scope.uploader.filters.push({
+        name: 'customFilter',
+        fn: function(item /*{File|FileLikeObject}*/, options) {
+        	$scope.uploader.clearQueue();
+            return true;
+        }
+    });
+    $scope.uploader.onSuccessItem = function (item, response, status, headers){
+    	if($scope.type == 'input'){
+    		$scope.task.input = response.fileId;
+    	} else {
+    		$scope.task.output = response.fileId;
+    	}
+	}
+});
+aojApp.controller('taskEditController', function($scope, $http, $sce, flash){
+	$scope.addNewSubtask = function (tasks)	{
+		var subtask = {};
+		subtask.score = 0;
+		subtask.timeLimit = 1;
+		subtask.memoryLimit = 256;
+		subtask.io = [];
+		tasks.push(subtask);
+	}
+	$scope.addNewTask = function (subtask)	{
+		subtask.io.push({input: '', output: ''});
+	}
+	$scope.updateProblemTasksAction = function (){
+		$scope.updateProblemTasks = {};
+		$scope.updateProblemTasks.loading = true;
+		$scope.updateProblemTasks.status = "";
+		updateProblemTasks($scope, $http, $sce, flash);
+		$scope.$watch('updateProblemTasks.loading', function(newVal, oldVal){
+			if(newVal == false){
+				if($scope.updateProblemTasks.success){
+					$scope.updateProblemTasks.status = "Successfull !"
+				} else {
+					$scope.updateProblemTasks.status = "Failed !"
+				}
+			}
+		})	
 	}
 })
 angular.module("aojApp").requires.push('child-app');

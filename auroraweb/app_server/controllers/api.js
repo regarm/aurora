@@ -21,5 +21,8 @@ exports = module.exports = {
 	getLang: require('./apic/getLang'),
 	getSubmissionHandle: require('./apic/getSubmissionHandle'),
 	fetchFile: require('./apic/fetchFile'),
-	updateProblemStmt: require('./apic/updateProblemStmt')
+	updateProblemStmt: require('./apic/updateProblemStmt'),
+	getLangs: require('./apic/getLangs'),
+	fileUpload: require('./apic/fileUpload'),
+	updateProblemTasks: require('./apic/updateProblemTasks')
 }

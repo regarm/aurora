@@ -8,7 +8,7 @@ module.exports = function(req, res, next){
 		submission.solution = fields.solution;
 		submission.problemCode = fields.problemCode;
 		submission.contestCode = fields.contestCode;
-		submission.lang = fields.lang;
+		submission.langId = fields.langId;
 		submission.handle = fields.handle;
 		db.submission.submit(submission, function (err, submissionId){
 			if(err) return next(err);

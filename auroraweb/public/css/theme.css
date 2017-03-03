@@ -266,7 +266,12 @@ select:-moz-focusring
     border-color: rgba(234,136,62,.5);
     background-color: #ea883e;
 }
-
+.aoj-button-laurel-green
+{
+    color: #fff;
+    border-color: #A9BA9D;
+    background-color: #A9BA9D;
+}
 /** aoj centering tools */
 .aoj-text-align-center
 {
@@ -328,4 +333,16 @@ select:-moz-focusring
 }
 .aoj-submission-bar-id{
     text-align: justify;
+}
+.aoj-tasks-edit{
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    font-size: 10px;
+}
+.aoj-subtask-edit{
+    margin: 7px;
+}
+.aoj-task-edit{
+    
 }

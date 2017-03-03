@@ -13,6 +13,7 @@ router.post('/getProblemTasks', api.getProblemTasks);
 router.post('/getSubmissionsList', api.getSubmissionsList);
 router.post('/submit', api.submit);
 router.post('/updateProblemStmt', api.updateProblemStmt);
+router.post('/updateProblemTasks', api.updateProblemTasks);
 
 router.use('/:submissionId', require('./apisubmissionr.js'));
 

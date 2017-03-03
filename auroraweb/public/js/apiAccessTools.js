@@ -18,10 +18,7 @@ function fetchProblemTasks($scope, $http, flash){
   $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/getProblemTasks')
   .then(
     function success(response){
-      if(response.data.success){
-        console.log(response.data);
-        $scope.problem.tasks = response.data.tasks;
-      } 
+        $scope.problem.tasks = response.data;
     },
     function error(response){
       console.log('Unknown error occured while fetching score');
@@ -55,6 +52,22 @@ function updateProblemStmt($scope, $http, $sce, flash){
     function error(response){
       $scope.updateProblemStmt.loading = false;
       $scope.updateProblemStmt.success = false;
+      console.log(response.data);
+    }
+  )
+}
+function updateProblemTasks($scope, $http, $sce, flash){
+  var data = {};
+  data.tasks = $scope.problem.tasks;
+  $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/updateProblemTasks', data)
+  .then(
+    function success(response){
+      $scope.updateProblemTasks.loading = false;
+      $scope.updateProblemTasks.success = true;
+    },
+    function error(response){
+      $scope.updateProblemTasks.loading = false;
+      $scope.updateProblemTasks.success = false;
       console.log(response.data);
     }
   )
@@ -273,7 +286,7 @@ function logout($scope, $http, $window, flash){
 
 /** Solution tools */
 function sendSubmission($scope, $http, $window, flash){
-  var data = {solution: $scope._document.getValue(), lang: 'C++', problemCode: $scope.problem.problemCode, contestCode: $scope.contest.contestCode, handle: $scope.session.handle};
+  var data = {solution: $scope._document.getValue(), langId: $scope.selectedLang.langId, problemCode: $scope.problem.problemCode, contestCode: $scope.contest.contestCode, handle: $scope.session.handle};
   $http.post('/api/' + $scope.contest.contestCode + '/' + $scope.problem.problemCode + '/submit', data)
   .then(
     function success(response){
@@ -306,6 +319,18 @@ function fetchLang($scope, $http, flash){
       if(response.data.success){
         $scope.lang = response.data.lang;
       }
+    },
+    function error(response){
+      console.log(response.data);
+    }
+  )
+}
+function fetchLangs($scope, $http, flash){
+  var url = '/api/getLangs';
+  $http.post(url)
+  .then(
+    function success(response){
+      $scope.langs = response.data;
     },
     function error(response){
       console.log(response.data);
