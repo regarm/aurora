@@ -1,1 +1,5 @@
+{"_id":{"$oid":"58af29a2816bcb31c56773ba"},"name":"C","editor_mode":"c_cpp","syntax_mode":"c_cpp"}
+{"_id":{"$oid":"58af3594816bcb31c567794f"},"name":"C++ 4.3.2","editor_mode":"c_cpp","syntax_mode":"c_cpp"}
 {"_id":{"$oid":"588fbab9fb8e51f038dbe537"},"name":"C++ 4.9.2","editor_mode":"c_cpp","syntax_mode":"c_cpp"}
+{"_id":{"$oid":"58af35a6816bcb31c5677958"},"name":"C++ 11","editor_mode":"c_cpp","syntax_mode":"c_cpp"}
+{"_id":{"$oid":"58af35b1816bcb31c567795f"},"name":"C++ 14","editor_mode":"c_cpp","syntax_mode":"c_cpp"}

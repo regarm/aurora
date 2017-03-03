@@ -49,5 +49,15 @@ exports = module.exports = {
 				return cb(null);
 			})
 		})
+	},
+	updateProblemTasks: function updateProblemTasks(problem, cb){
+		MongoPool.getInstance(function(err, db){
+			if(err) return cb(err);
+			db.collection('problem').updateOne({contestCode: problem.contestCode, problemCode: problem.problemCode},
+			 {$set: {tasks: problem.tasks}}, function (err, document){
+				if(err) return cb(err);
+				return cb(null);
+			})
+		})
 	}
 }

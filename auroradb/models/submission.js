@@ -6,6 +6,7 @@ exports = module.exports = {
 	submit: function submit(submission, cb){
 		MongoPool.getInstance(function(err, db){
 			if(err) return cb(err);
+			submission.langId = ObjectId(submission.langId);
 			db.collection('submission').insertOne(submission, function (err, document){
 				if(err) return cb(err);
 				return cb(err, document.insertedId);
