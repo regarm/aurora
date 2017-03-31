@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>messenger.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="DLL.html">
+                DLL.js
+              </a>
+            
+              
+              <a class="source" href="api.html">
+                api.js
+              </a>
+            
+              
+              <a class="source" href="compiler.html">
+                compiler.js
+              </a>
+            
+              
+              <a class="source" href="data.html">
+                data.js
+              </a>
+            
+              
+              <a class="source" href="judge.html">
+                judge.js
+              </a>
+            
+              
+              <a class="source" href="messages.html">
+                messages.js
+              </a>
+            
+              
+              <a class="source" href="messenger.html">
+                messenger.js
+              </a>
+            
+              
+              <a class="source" href="problemFetch.html">
+                problemFetch.js
+              </a>
+            
+              
+              <a class="source" href="queue.html">
+                queue.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>messenger.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Messenger between judge and client
+Supported Messages :</p>
+<ol>
+<li><code>judge</code> submission  </li>
+<li><code>rejudge</code> submission  </li>
+<li><code>remove-from-queue</code> submission  </li>
+<li><code>is-in-queue</code> sumission  </li>
+</ol>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>i.e. {type : ‘judge’, data : { submission : submission} }</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">var</span> process = <span class="hljs-built_in">require</span>(<span class="hljs-string">'process'</span>);
+
+<span class="hljs-keyword">var</span> eventEmitter = <span class="hljs-keyword">new</span> (<span class="hljs-built_in">require</span>(<span class="hljs-string">'events'</span>)).EventEmitter();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>messages</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> messages = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./messages'</span>)(eventEmitter);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Restrictions on incoming messages</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Restrictions</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>General Restriction</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">this</span>.generalRestriction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">generalRestriction</span>(<span class="hljs-params">msg, callback</span>)</span>{
+		<span class="hljs-keyword">if</span>(msg.type &amp;&amp; msg.data){
+			callback(msg);
+		} <span class="hljs-keyword">else</span> {
+			process.emitWarning(<span class="hljs-string">'Incoming message did not satisfy general restriction, Ignoring'</span>);
+		}
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Restriction on submission</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">this</span>.submissionRestriction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">submissionRestriction</span>(<span class="hljs-params">submission, callback</span>)</span>{
+		<span class="hljs-keyword">if</span>(submission &amp;&amp; submission.submissionId &amp;&amp; submission.problemCode &amp;&amp; submission.contestCode){
+			callback();
+		} <span class="hljs-keyword">else</span> {
+			process.emitWarning(<span class="hljs-string">'Incoming message did not satisfy submission restriction, Ignoring'</span>);
+		}
+	}
+}
+
+<span class="hljs-keyword">var</span> restriction = <span class="hljs-keyword">new</span> Restrictions();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Message Parsing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">messenger</span>(<span class="hljs-params">ws, msg</span>)</span>{
+	restriction.generalRestriction(msg, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">msg</span>)</span>{
+		<span class="hljs-keyword">switch</span>(msg.type){
+			<span class="hljs-keyword">case</span> <span class="hljs-string">"judge"</span>:
+				restriction.submissionRestriction(msg.data.submission, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+					eventEmitter.emit(<span class="hljs-string">'judge'</span>, ws, msg.data.submission);
+				});
+				<span class="hljs-keyword">break</span>;
+			<span class="hljs-keyword">case</span> <span class="hljs-string">"rejudge"</span>:
+				restriction.submissionRestriction(msg.data.submission, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+					eventEmitter.emit(<span class="hljs-string">'rejudge'</span>, ws, msg.data.submission);
+				});
+				<span class="hljs-keyword">break</span>;
+			<span class="hljs-keyword">case</span> <span class="hljs-string">"remove-from-queue"</span>:
+				restriction.submissionRestriction(msg.data.submission, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+					eventEmitter.emit(<span class="hljs-string">'remove-from-queue'</span>, ws, msg.data.submission);
+				});
+				<span class="hljs-keyword">break</span>;
+			<span class="hljs-keyword">case</span> <span class="hljs-string">"is-in-queue"</span>:
+				restriction.submissionRestriction(msg.data.submission, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+					eventEmitter.emit(<span class="hljs-string">'is-in-queue'</span>, ws, msg.data.submission);
+				});
+				<span class="hljs-keyword">break</span>;
+		}
+	})
+}
+<span class="hljs-built_in">module</span>.exports = messenger;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

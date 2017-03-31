@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>data.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page">
+            
+              
+              <a class="source" href="DLL.html">
+                DLL.js
+              </a>
+            
+              
+              <a class="source" href="api.html">
+                api.js
+              </a>
+            
+              
+              <a class="source" href="compiler.html">
+                compiler.js
+              </a>
+            
+              
+              <a class="source" href="data.html">
+                data.js
+              </a>
+            
+              
+              <a class="source" href="judge.html">
+                judge.js
+              </a>
+            
+              
+              <a class="source" href="messages.html">
+                messages.js
+              </a>
+            
+              
+              <a class="source" href="messenger.html">
+                messenger.js
+              </a>
+            
+              
+              <a class="source" href="problemFetch.html">
+                problemFetch.js
+              </a>
+            
+              
+              <a class="source" href="queue.html">
+                queue.js
+              </a>
+            
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>data.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> api = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./api'</span>);
+<span class="hljs-keyword">var</span> <span class="hljs-keyword">async</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'async'</span>);
+
+
+<span class="hljs-keyword">var</span> data = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Map</span>();
+<span class="hljs-comment">/*
+data contains problem cache map
+key : {problemCode, contestCode}
+value : {tasks}
+*/</span>
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">add</span>(<span class="hljs-params">problem, cb</span>)</span>{
+	<span class="hljs-keyword">if</span>(problem &amp;&amp; problem.problemCode &amp;&amp; problem.contestCode){
+		<span class="hljs-keyword">var</span> key = {<span class="hljs-attr">problemCode</span>: problem.problemCode, <span class="hljs-attr">contestCode</span>: problem.contestCode};
+		<span class="hljs-keyword">var</span> value = {};
+		<span class="hljs-keyword">if</span>(data.has(<span class="hljs-built_in">JSON</span>.stringify(key))) <span class="hljs-keyword">return</span> cb(<span class="hljs-literal">null</span>);
+
+		<span class="hljs-keyword">async</span>.series([
+			<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cb</span>)</span>{
+				api.fetchProblemTasks(key, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, tasks</span>)</span>{
+					<span class="hljs-keyword">if</span>(err) <span class="hljs-keyword">return</span> cb(err);
+					value.tasks = tasks;
+					cb(<span class="hljs-literal">null</span>);
+				})
+			},
+			<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">cb</span>)</span>{
+				api.fetchTask(value.tasks, cb);
+			}
+		], <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>)</span>{
+			<span class="hljs-keyword">if</span>(err){
+				<span class="hljs-keyword">return</span> cb(err);
+			}
+			data.set(<span class="hljs-built_in">JSON</span>.stringify(key), value);
+			cb(<span class="hljs-literal">null</span>);
+		});
+	} <span class="hljs-keyword">else</span> {
+		<span class="hljs-keyword">return</span> cb(<span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Given data is not sufficient to add problem: '</span> + <span class="hljs-built_in">JSON</span>.stringify(problem)));
+	}
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove</span>(<span class="hljs-params">problem</span>)</span>{
+	<span class="hljs-keyword">if</span>(problem &amp;&amp; problem.problemCode &amp;&amp; problem.contestCode){
+		<span class="hljs-keyword">var</span> key = {<span class="hljs-attr">problemCode</span>: problem.problemCode, <span class="hljs-attr">contestCode</span>: problem.contestCode};
+		data.delete(<span class="hljs-built_in">JSON</span>.stringify(key));
+	}
+}
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">has</span>(<span class="hljs-params">problem, cb</span>)</span>{
+	<span class="hljs-keyword">if</span>(problem &amp;&amp; problem.problemCode &amp;&amp; problem.contestCode){
+		<span class="hljs-keyword">var</span> key = {<span class="hljs-attr">problemCode</span>: problem.problemCode, <span class="hljs-attr">contestCode</span>: problem.contestCode};
+		cb(<span class="hljs-literal">null</span>, data.has(<span class="hljs-built_in">JSON</span>.stringify(key)));
+	} <span class="hljs-keyword">else</span> {
+		cb(<span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>);
+	}
+}
+
+add({
+		<span class="hljs-attr">contestCode</span>: <span class="hljs-string">"PRACTICE"</span>,
+		<span class="hljs-attr">problemCode</span>: <span class="hljs-string">"TEST"</span>
+	}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, res</span>)</span>{
+		<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'err '</span> + err);
+		<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'res '</span> + res);
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> [key, value] <span class="hljs-keyword">of</span> data.entries()) {
+		  <span class="hljs-built_in">console</span>.log(key);
+		  <span class="hljs-built_in">console</span>.log(value);
+		}
+})</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
