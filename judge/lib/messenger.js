@@ -8,6 +8,7 @@
 // i.e. {type : 'judge', data : { submission : submission} }
 
 var process = require('process');
+var api = require('./api');
 
 var eventEmitter = new (require('events')).EventEmitter();
 //messages
@@ -28,7 +29,14 @@ function Restrictions(){
 	//Restriction on submission
 	this.submissionRestriction = function submissionRestriction(submission, callback){
 		if(submission && submission.submissionId && submission.problemCode && submission.contestCode){
-			callback();
+			api.fetchSubmission(submission, function (err){
+				if(err) {
+					callback(err);
+				} else {
+					callback();
+				}
+				
+			})
 		} else {
 			process.emitWarning('Incoming message did not satisfy submission restriction, Ignoring');
 		}

@@ -17,7 +17,7 @@ var noop = function noop(){};
 function Queue(param_task, keyParameter, concurrency){
 	if(param_task == null) param_task = noop;
 	if(typeof param_task !== 'function'){
-		throw new Error('Queue task callback must be a function.');
+		process.emitWarning('Queue task callback is not a function, keyParameter: ' + keyParameter);
 	}
 	if(keyParameter == null){
 		throw new Error('Null keyParameter received in queue');
@@ -92,9 +92,10 @@ function Queue(param_task, keyParameter, concurrency){
 	}
 
 	//Delete candidate element from queue.
-	this.pop_front = function front(){
+	this.pop_front = function pop_front(){
 		if(this.empty()) return false;
 		else {
+			this.keyMap.delete(this.store.front()[keyParameter]);
 			return this.store.pop_front();
 		}
 	}	
@@ -113,10 +114,10 @@ function Queue(param_task, keyParameter, concurrency){
 		while((!this.paused) && this.workers < this.concurrency && (!this.empty())){
 			this.workers += 1;
 			var item = this.front();
-			this.pop_front();
 			if(this.keyMap.has(item[keyParameter])){
 				this.task(item, this.endWorker.bind(this));
 			}
+			this.pop_front();
 		}
 		this.singleProcessingLock = false;
 	}

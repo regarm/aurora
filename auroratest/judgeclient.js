@@ -10,7 +10,7 @@ ws.on('open', function open() {
 		submissionId: "589d935fb6f2f81ca0789e70"
 
 	};
-	var data = {type: "judge", submission: submission};
+	var data = {type: "judge", data: {submission: submission}};
 	ws.send(JSON.stringify(data));
 });
 

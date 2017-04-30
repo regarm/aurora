@@ -14,7 +14,7 @@ wss.on('connection', function connection(ws){
 	//Event emitted on new incoming message
 	ws.on('message', function incoming(message){
 		msg = JSON.parse(message);
-		messenger.process(ws, msg);
+		messenger(ws, msg);
 	})
 
 });

@@ -3,6 +3,7 @@ var conf = require('../conf');
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
+
 /**
 Beware of nodejs object assignment. Object assignment is done by reference.
 To deep copy use either one :
@@ -16,6 +17,8 @@ module.exports.fetchSubmission = fetchSubmission;
 module.exports.fetchProblemTasks = fetchProblemTasks;
 module.exports.fetchFile = fetchFile;
 module.exports.fetchTask = fetchTask;
+
+
 
 function fetch(url, cb){
 	var headers = {
@@ -37,10 +40,15 @@ function fetchSubmission(data, cb){
 	fetch(url, function (err, response){
 		if(err){
 			return cb(err);
+		} else {
+			fs.writeFile(path.join(__dirname, '/../runtime/submission', data.submissionId + '.cpp'), response.solution, function (err){
+				if(err){
+					cb(err);
+				} else {
+					cb();
+				}
+			})
 		}
-		fs.writeFile(path.join(__dirname, 'runtime/submission', data.submissionId + '.cpp'), response.solution, function (err){
-			cb(err);
-		})
 	})
 }
 function fetchProblemTasks(data, cb){
@@ -58,10 +66,12 @@ function fetchFile(file, cb){
 	fetch(url, function (err, response){
 		if(err){
 			return cb(err);
+		} else {
+			console.log(file);
+			fs.writeFile(path.join(__dirname, '/../runtime/io', file), response.value, function (err){
+				cb(err);
+			})
 		}
-		fs.writeFile(path.join(__dirname, 'runtime/io', file), response.value, function (err){
-			cb(err);
-		})
 	})
 }
 

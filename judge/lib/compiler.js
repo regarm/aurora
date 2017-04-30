@@ -1,33 +1,30 @@
 var path = require('path');
 const exec = require('child_process').exec;
 
-
-function compile(data, cb){
-	var cmd = "g++ " + path.join('submission', data.submission.submissionId + '.cpp') + " -o " + path.join('submission', data.submission.submissionId);
+function compile(item, log, cb){
+	var cmd = "g++ " + path.join('../runtime/submission', item.submissionId + '.cpp') + " -o " + path.join('../runtime/submission', item.submissionId);
 	var options = {
-		cwd: path.join(__dirname, 'runtime'),
+		cwd: path.join(__dirname, '../runtime'),
 		encoding: 'utf8',
 		shell: '/bin/bash',
 		env: null
 	}
-	console.log(cmd);
 	var child = exec(cmd, options, function (error, stdout, stderr){
-		if(stderr){
-			var err = new Error('COMPILATION_ERROR');
-			data.COMPILATION_ERROR = true;
-			data.COMPILATION_ERROR_VAL = stderr;
-			return cb(err);
+		if(error){
+			log.JUDGE_ERROR = true;
+			log.JUDGE_ERROR_VAL = 'Unknown error occured on judge while compiling';
+			cb(new Error(log.JUDGE_ERROR_VAL));
 		} else {
-			if (error) {
-				console.error(`exec error: ${error}`);
-				return cb(error);
+			if(stderr){
+				log.COMPILATION_ERROR = true;
+				log.COMPILATION_ERROR_VAL = stderr;
+				return cb(new Error(COMPILATION_ERROR_VAL));
+			} else {
+				item.COMPILE_ERROR = false;
+				return cb(null);
 			}
-			data.COMPILE_ERROR = false;
-			console.log('Compilation successfull');
-			return cb(null);
 		}
 	});
-
 }
 
-module.exports.compile = compile
+module.exports.compile = compile;
