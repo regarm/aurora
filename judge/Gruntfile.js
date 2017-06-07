@@ -2,7 +2,6 @@ module.exports = function(grunt) {
 
     // Project configuration.
     grunt.initConfig( {
-      pkg: grunt.file.readJSON('package.json'),
       docco: {
           options: {
               dst: './docs/',
@@ -13,8 +12,9 @@ module.exports = function(grunt) {
                   {
                       expand: true,
                       src: [
-                          'lib/*.js',
-                          'index.js'
+                        './index.js',
+                        './lib/*.js',
+                        'lib/dataType/*'
                       ]
                   }
               ]
@@ -23,9 +23,9 @@ module.exports = function(grunt) {
     });
 
     // Load tasks
-    grunt.loadNpmTasks('grunt-docco2');
+    grunt.loadNpmTasks('grunt-docco');
 
     // Default task(s)
-    grunt.registerTask('default', ['docco']);
+    grunt.registerTask('document', ['docco']);
 
 };
