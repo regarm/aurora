@@ -12,8 +12,9 @@ ws.on('open', function open() {
 	};
 	var data = {type: "judge", data: {submission: submission}};
 	ws.send(JSON.stringify(data));
+	ws.close();
 });
 
-ws.on('message', function incoming(data, flags) {
-	console.log(data);
-});
+// ws.on('message', function incoming(data, flags) {
+// 	console.log(data);
+// });
