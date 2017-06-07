@@ -1,5 +1,5 @@
 var WS    = require('ws');
-var messenger = require('./lib/messenger');
+var messenger = require('./lib/communication/messenger');
 
 //Creating New Websocket Server
 var wss = new WS.Server({

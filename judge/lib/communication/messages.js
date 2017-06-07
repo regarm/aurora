@@ -1,6 +1,6 @@
 //Messages Implementation
 
-var ajutils = require('./ajutils');
+var ajutils = require('../ajutils');
 
 function messages(eventEmitter){
 	eventEmitter.on('judge', function(ws, submission){
