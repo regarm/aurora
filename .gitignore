@@ -54,3 +54,7 @@ jspm_packages
 
 # judge runtime 
 runtime
+
+#sublime
+*.sublime-project
+*.sublime-workspace

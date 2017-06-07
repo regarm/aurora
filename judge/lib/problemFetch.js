@@ -2,7 +2,6 @@ var async = require('async');
 var api = require('./api');
 
 
-
 function problemFetch(problem, cb){
 	console.log('fetching problem');
 	async.series([

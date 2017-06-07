@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>judge.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="ajutils.html">
+                  ajutils.js
+                </a>
+              
+                
+                <a class="source" href="api.html">
+                  api.js
+                </a>
+              
+                
+                <a class="source" href="caches.html">
+                  caches.js
+                </a>
+              
+                
+                <a class="source" href="data.html">
+                  data.js
+                </a>
+              
+                
+                <a class="source" href="judge.html">
+                  judge.js
+                </a>
+              
+                
+                <a class="source" href="problemFetch.html">
+                  problemFetch.js
+                </a>
+              
+                
+                <a class="source" href="queues.html">
+                  queues.js
+                </a>
+              
+                
+                <a class="source" href="DLL.html">
+                  DLL.js
+                </a>
+              
+                
+                <a class="source" href="cache.html">
+                  cache.js
+                </a>
+              
+                
+                <a class="source" href="queue.html">
+                  queue.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>judge.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> <span class="hljs-keyword">async</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'async'</span>);
+<span class="hljs-keyword">var</span> compiler = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./compiler'</span>);
+<span class="hljs-keyword">var</span> runner = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./runner'</span>);
+<span class="hljs-keyword">var</span> evaluater = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./evaluater'</span>);
+<span class="hljs-keyword">var</span> ajutils = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./ajutils'</span>);
+
+<span class="hljs-comment">/**
+Beware of nodejs object assignment. Object assignment is done by reference.
+To deep copy use either one :
+data.submission = Object.assign({}, submission );
+util._extend
+
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>function runSubtask(subtask, cb){
+    var exe = path.join(‘submission’, data.submission.submissionId);
+    var input = path.join(‘io’, subtask.input);
+    var output = path.join(‘submission’, subtask.input + ‘_’ + subtask.output);
+    var cmd = exe + “ &lt; “ + input + “ &gt; “ + output;
+    var options = {
+        cwd: path.join(__dirname, ‘runtime’),
+        encoding: ‘utf8’,
+        shell: ‘/bin/bash’,
+        env: null
+    }
+    console.log(cmd);
+    var child = exec(cmd, options, function (error, stdout, stderr){
+        if(stderr){
+            subtask.RUN_TIME_ERROR = true;
+            subtask.RUN_TIME_ERROR_VAL = stderr;
+        } else {
+            if (error) {
+                console.error(<code>exec error: ${error}</code>);
+                return cb(error);
+            }
+            console.log(‘Ran successfull’);
+        }
+        return cb(null);
+    });
+}
+function runSubtasks(subtasks, cb){
+    async.each(subtasks.io, runSubtask, function (err){
+        cb(err);
+    });
+}
+function runTasks(cb){
+    async.each(data.tasks, runSubtasks, function (err){
+        cb(err);
+    });
+}
+function evaluate(cb){
+    async.each(data.tasks,
+    function (subtasks, cb){
+        async.each(subtasks.io, 
+        function (subtask, cb){</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <pre><code>        cb(<span class="hljs-literal">null</span>);
+    }, 
+    <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>)</span>{
+        cb(err);
+    });
+},
+<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>)</span>{
+    cb(err);
+});    
+</code></pre><p>}
+function send(cb){
+    cb(null);
+}
+function run(submission){
+    data.submission = Object.assign({}, submission );
+    async.series([
+        fetchSubmission,
+        fetchProblemTasks,
+        fetchTask,
+        function (cb){
+            compiler.compile(data, cb);
+        },
+        runTasks,
+    ],
+    function (err){
+        if(err){
+            if(err.message = “COMILATION_ERROR”){
+                console.log(‘COMPILATION_ERROR’);
+                console.log(data.COMPILATION_ERROR_VAL);
+            } else {
+                return cb(err);
+            }
+        }
+        async.series([
+            evaluate,
+            send
+        ], function (err){
+            if(err){
+                console.log(err);
+            }
+            console.log(‘Submission ‘ + submission.submissionId + ‘ success’);
+            console.log(util.inspect(data, false, null))
+        })
+    });
+}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">redact</span>(<span class="hljs-params">item</span>)</span>{
+	ajutils.enqueueProblem(item);
+	ajutils.enqueueSubmission(item);
+}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">send</span>(<span class="hljs-params">item, log, callback</span>)</span>{
+	callback();
+}
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fakerun</span>(<span class="hljs-params">item, cb</span>)</span>{
+	<span class="hljs-keyword">var</span> log = {};
+	<span class="hljs-keyword">async</span>.series([
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>)</span>{
+			compiler.compile(item, log, callback);
+		},
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>)</span>{
+			runner.run(item, log, callback);
+		},
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>)</span>{
+			evaluater.evaluate(item, log, callback);
+		},
+		<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">callback</span>)</span>{
+			send(item, log, callback);
+		}
+	],<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>)</span>{
+		<span class="hljs-keyword">if</span>(err){
+			<span class="hljs-comment">/* failed to judge */</span>
+			<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'failed to judge'</span>);
+			redact(item);
+		}
+		<span class="hljs-built_in">console</span>.log(err);
+		<span class="hljs-built_in">console</span>.log(log);
+		cb();
+	})
+}
+
+<span class="hljs-built_in">module</span>.exports = fakerun;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

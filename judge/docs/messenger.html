@@ -16,53 +16,90 @@
           <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
           <a class="small" href="javascript:void(0);">+</a>
           <div id="jump_wrapper">
-          <div id="jump_page">
-            
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
               
-              <a class="source" href="DLL.html">
-                DLL.js
-              </a>
-            
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
               
-              <a class="source" href="api.html">
-                api.js
-              </a>
-            
+                
+                <a class="source" href="Q.html">
+                  Q.js
+                </a>
               
-              <a class="source" href="compiler.html">
-                compiler.js
-              </a>
-            
+                
+                <a class="source" href="ajutils.html">
+                  ajutils.js
+                </a>
               
-              <a class="source" href="data.html">
-                data.js
-              </a>
-            
+                
+                <a class="source" href="api.html">
+                  api.js
+                </a>
               
-              <a class="source" href="judge.html">
-                judge.js
-              </a>
-            
+                
+                <a class="source" href="compiler.html">
+                  compiler.js
+                </a>
               
-              <a class="source" href="messages.html">
-                messages.js
-              </a>
-            
+                
+                <a class="source" href="data.html">
+                  data.js
+                </a>
               
-              <a class="source" href="messenger.html">
-                messenger.js
-              </a>
-            
+                
+                <a class="source" href="evaluater.html">
+                  evaluater.js
+                </a>
               
-              <a class="source" href="problemFetch.html">
-                problemFetch.js
-              </a>
-            
+                
+                <a class="source" href="judge.html">
+                  judge.js
+                </a>
               
-              <a class="source" href="queue.html">
-                queue.js
-              </a>
-            
+                
+                <a class="source" href="messages.html">
+                  messages.js
+                </a>
+              
+                
+                <a class="source" href="messenger.html">
+                  messenger.js
+                </a>
+              
+                
+                <a class="source" href="problemFetch.html">
+                  problemFetch.js
+                </a>
+              
+                
+                <a class="source" href="runner.html">
+                  runner.js
+                </a>
+              
+                
+                <a class="source" href="DLL.html">
+                  DLL.js
+                </a>
+              
+                
+                <a class="source" href="cache.html">
+                  cache.js
+                </a>
+              
+                
+                <a class="source" href="queue.html">
+                  queue.js
+                </a>
+              
+                
+                <a class="source" href="test.html">
+                  test.js
+                </a>
+              
+            </div>
           </div>
         </li>
       </ul>
@@ -109,6 +146,7 @@ Supported Messages :</p>
             
             <div class="content"><div class='highlight'><pre>
 <span class="hljs-keyword">var</span> process = <span class="hljs-built_in">require</span>(<span class="hljs-string">'process'</span>);
+<span class="hljs-keyword">var</span> api = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./api'</span>);
 
 <span class="hljs-keyword">var</span> eventEmitter = <span class="hljs-keyword">new</span> (<span class="hljs-built_in">require</span>(<span class="hljs-string">'events'</span>)).EventEmitter();</pre></div></div>
             
@@ -178,7 +216,14 @@ Supported Messages :</p>
             
             <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">this</span>.submissionRestriction = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">submissionRestriction</span>(<span class="hljs-params">submission, callback</span>)</span>{
 		<span class="hljs-keyword">if</span>(submission &amp;&amp; submission.submissionId &amp;&amp; submission.problemCode &amp;&amp; submission.contestCode){
-			callback();
+			api.fetchSubmission(submission, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err</span>)</span>{
+				<span class="hljs-keyword">if</span>(err) {
+					callback(err);
+				} <span class="hljs-keyword">else</span> {
+					callback();
+				}
+				
+			})
 		} <span class="hljs-keyword">else</span> {
 			process.emitWarning(<span class="hljs-string">'Incoming message did not satisfy submission restriction, Ignoring'</span>);
 		}

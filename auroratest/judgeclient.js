@@ -6,7 +6,7 @@ const ws = new WebSocket('ws://localhost:4091', {
 ws.on('open', function open() {
 	var submission = {
 		contestCode: "PRACTICE",
-		problemCode: "SQ",
+		problemCode: "TEST",
 		submissionId: "589d935fb6f2f81ca0789e70"
 
 	};

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>queues.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="ajutils.html">
+                  ajutils.js
+                </a>
+              
+                
+                <a class="source" href="api.html">
+                  api.js
+                </a>
+              
+                
+                <a class="source" href="caches.html">
+                  caches.js
+                </a>
+              
+                
+                <a class="source" href="data.html">
+                  data.js
+                </a>
+              
+                
+                <a class="source" href="judge.html">
+                  judge.js
+                </a>
+              
+                
+                <a class="source" href="problemFetch.html">
+                  problemFetch.js
+                </a>
+              
+                
+                <a class="source" href="queues.html">
+                  queues.js
+                </a>
+              
+                
+                <a class="source" href="DLL.html">
+                  DLL.js
+                </a>
+              
+                
+                <a class="source" href="cache.html">
+                  cache.js
+                </a>
+              
+                
+                <a class="source" href="queue.html">
+                  queue.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>queues.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>Queues for their purposes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">var</span> Queue = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./dataType/queue'</span>);
+<span class="hljs-keyword">var</span> api = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./api'</span>);
+
+
+<span class="hljs-comment">/* Queue of submissions to fetch them */</span>
+SubmissionFetchQueue = <span class="hljs-keyword">new</span> Queue(api.fetchSubmission. <span class="hljs-number">1</span>);
+
+<span class="hljs-comment">/* Queue of problems to fetch problem tasks */</span>
+ProblemFetchQueue = <span class="hljs-keyword">new</span> Queue(<span class="hljs-built_in">require</span>(<span class="hljs-string">'./problemFetch'</span>), <span class="hljs-number">1</span>);
+
+<span class="hljs-comment">/* Queue of submissions to judge them */</span>
+JudgeQueue = <span class="hljs-keyword">new</span> Queue(<span class="hljs-built_in">require</span>(<span class="hljs-string">'./judge'</span>), <span class="hljs-number">1</span>);
+
+
+<span class="hljs-built_in">module</span>.exports.SubmissionFetchQueue = SubmissionFetchQueue;
+<span class="hljs-built_in">module</span>.exports.ProblemFetchQueue = ProblemFetchQueue;
+<span class="hljs-built_in">module</span>.exports.JudgeQueue = JudgeQueue;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

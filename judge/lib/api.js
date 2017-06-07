@@ -41,7 +41,7 @@ function fetchSubmission(data, cb){
 		if(err){
 			return cb(err);
 		} else {
-			fs.writeFile(path.join(__dirname, '/../runtime/submission', data.submissionId + '.cpp'), response.solution, function (err){
+			fs.writeFile(path.join(__dirname, '..', conf.runtime_dir, 'submission', data.submissionId + '.cpp'), response.solution, function (err){
 				if(err){
 					cb(err);
 				} else {
@@ -68,7 +68,7 @@ function fetchFile(file, cb){
 			return cb(err);
 		} else {
 			console.log(file);
-			fs.writeFile(path.join(__dirname, '/../runtime/io', file), response.value, function (err){
+			fs.writeFile(path.join(__dirname, '..', conf.runtime_dir, 'io', file), response.value, function (err){
 				cb(err);
 			})
 		}

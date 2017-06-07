@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>index.js</title>
+  <title>cache.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -83,7 +83,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>index.js</h1>
+                  <h1>cache.js</h1>
               </div>
           </li>
         
@@ -95,11 +95,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              
+              <p>Time bounded memory cache (Inspired by : <a href="https://github.com/ptarjan/node-cache">node-cache</a>)</p>
+<hr>
+<ol>
+<li><a href="#put">put</a></li>
+<li><a href="#del">del</a></li>
+<li><a href="#clear">clear</a></li>
+<li><a href="#get">get</a></li>
+</ol>
+<hr>
+
             </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> WS    = <span class="hljs-built_in">require</span>(<span class="hljs-string">'ws'</span>);
-<span class="hljs-keyword">var</span> messenger = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./lib/messenger'</span>);</pre></div></div>
             
         </li>
         
@@ -110,14 +116,16 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>Creating New Websocket Server</p>
-
+              
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> wss = <span class="hljs-keyword">new</span> WS.Server({
-  <span class="hljs-attr">perMessageDeflate</span>: <span class="hljs-literal">false</span>,
-  <span class="hljs-attr">port</span>: <span class="hljs-number">4091</span>
-});</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Cache</span>(<span class="hljs-params">timeOut</span>)</span>{
+	<span class="hljs-keyword">var</span> self = <span class="hljs-keyword">this</span>;
+	<span class="hljs-keyword">var</span> cache = <span class="hljs-built_in">Object</span>.create(<span class="hljs-literal">null</span>);
+
+	<span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> timeOut !== <span class="hljs-string">'undefined'</span> &amp;&amp; (<span class="hljs-keyword">typeof</span> timeOut !== <span class="hljs-string">'number'</span> || <span class="hljs-built_in">isNaN</span>(timeOut) || timeOut &lt;= <span class="hljs-number">0</span>)) {
+		<span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Error</span>(<span class="hljs-string">'Cache timeout must be a positive number'</span>);
+	}</pre></div></div>
             
         </li>
         
@@ -128,11 +136,30 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Event emitted on a new Connection</p>
+              <p><a name="put"> </a></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>wss.on(<span class="hljs-string">'connection'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">connection</span>(<span class="hljs-params">ws</span>)</span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	self.put = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">put</span>(<span class="hljs-params">key, val</span>)</span>{
+		<span class="hljs-keyword">var</span> oldRecord = cache[key];
+		<span class="hljs-keyword">if</span>(oldRecord){
+			<span class="hljs-keyword">if</span>(oldRecord.timeout){
+				clearTimeout(oldRecord.timeout);
+			}
+			<span class="hljs-keyword">delete</span> oldRecord;
+		}
+		<span class="hljs-keyword">var</span> record = {
+			<span class="hljs-attr">value</span>: val,
+			<span class="hljs-attr">expire</span>: timeOut + <span class="hljs-built_in">Date</span>.now()
+		}
+		<span class="hljs-keyword">if</span>(!<span class="hljs-built_in">isNaN</span>(record.expire)){
+			record.timeout = setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
+				self.del(key);
+			}, timeOut);
+		}
+
+		cache[key] = record;
+	}</pre></div></div>
             
         </li>
         
@@ -143,16 +170,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Event emitted on new incoming message</p>
+              <p><a name="del"> </a></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	ws.on(<span class="hljs-string">'message'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">incoming</span>(<span class="hljs-params">message</span>)</span>{
-		msg = <span class="hljs-built_in">JSON</span>.parse(message);
-		messenger(ws, msg);
-	})
-
-});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	self.del = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">del</span>(<span class="hljs-params">key</span>)</span>{
+		<span class="hljs-keyword">var</span> oldRecord = cache[key];
+		<span class="hljs-keyword">if</span>(oldRecord &amp;&amp; oldRecord.timeout){
+			clearTimeout(cache[key].timeout);
+		}
+		<span class="hljs-keyword">delete</span> cache[key];
+	}</pre></div></div>
             
         </li>
         
@@ -163,14 +191,19 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>Event emitted on error occurence.</p>
+              <p><a name="clear"> </a></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>wss.on(<span class="hljs-string">'error'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">error</span>(<span class="hljs-params">err</span>)</span>{
-	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Following error occured: '</span>);
-	<span class="hljs-built_in">console</span>.log(err);
-})</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	self.clear = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">clear</span>(<span class="hljs-params"></span>)</span>{
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> key <span class="hljs-keyword">in</span> cache){
+			<span class="hljs-keyword">if</span>(cache[key].timeout){
+				clearTimeout(cache[key].timeout);
+			}
+		}
+		<span class="hljs-keyword">delete</span> cache;
+		cache = <span class="hljs-built_in">Object</span>.create(<span class="hljs-literal">null</span>);
+	}</pre></div></div>
             
         </li>
         
@@ -181,29 +214,16 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>Emitted before the response headers are written to the socket as part of the handshake.</p>
+              <p><a name="get"> </a></p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>wss.on(<span class="hljs-string">'headers'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">headers</span>)</span>{
-})</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Emitted when the underlying server has been bound.</p>
+            <div class="content"><div class='highlight'><pre>	self.get = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">get</span>(<span class="hljs-params"></span>)</span>{
+		<span class="hljs-keyword">return</span> cache[key];
+	}
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>wss.on(<span class="hljs-string">'listening'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>)</span>{
-	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Judge is listening\n"</span>);
-})</pre></div></div>
+}
+<span class="hljs-built_in">module</span>.exports = Cache;</pre></div></div>
             
         </li>
         

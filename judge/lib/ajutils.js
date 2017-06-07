@@ -1,14 +1,16 @@
 //[Queue Data Structure](queue.html)
 var Queue = require('./queue');
+var api = require('./api');
 
-//Submission Queue
-var SubmissionQueue = new Queue(require('./judge'), 'submissionId', 1);
+var SubmissionQueue = new Queue(api.fetchSubmission, 'submissionId', 1);
 var ProblemQueue = new Queue(require('./problemFetch'), 'contestCode_problemCode', 1);
+var JudgeQueue = new Queue(/*require('./judge')*/function (){console.log('executing')}, 'submissionId', 1);
 
-//conf
-var conf = require('../conf');
-conf.SubmissionQueue = SubmissionQueue;
-conf.ProblemQueue = ProblemQueue;
+//Q.js
+var Q = require('./Q');
+Q.SubmissionQueue = SubmissionQueue;
+Q.ProblemQueue = ProblemQueue;
+Q.JudgeQueue = JudgeQueue;
 
 
 function enqueueProblem(submission){
@@ -21,6 +23,7 @@ function enqueueProblem(submission){
 }
 
 function enqueueSubmission(submission){
+	JudgeQueue.enqueue(submission, 'submissionId');
 	SubmissionQueue.enqueue(submission, 'submissionId');
 }
 

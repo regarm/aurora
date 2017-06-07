@@ -6,7 +6,7 @@
   "dependencies": {
     "auroradb": "^1.0.0",
     "request": "^2.79.0",
-    "ws": "^2.0.1"
+    "ws": "^2.3.1"
   },
   "devDependencies": {},
   "scripts": {
