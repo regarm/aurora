@@ -10,7 +10,7 @@ function enqueueProblem(submission){
 }
 
 function enqueueSubmission(sub){
-	// JudgeQueue.enqueue(submission);
+	JudgeQueue.enqueue(sub);
 	var submission = {};
 	submission.problemCode = sub.problemCode;
 	submission.contestCode = sub.contestCode;

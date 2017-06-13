@@ -58,7 +58,14 @@ function api(){
 	}
 
 	fetchIO = function fetchIO(io, cb){
-		async.each(io, fetchFile, function (err){
+		async.parallel([
+			function (callback){
+				fetchFile(io.input, callback);
+			},
+			function (callback){
+				fetchFile(io.output, callback);
+			}
+		], function (err){
 			cb(err);
 		})
 	}

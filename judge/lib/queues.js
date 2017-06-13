@@ -23,7 +23,7 @@ ProblemFetchQueue = new Queue(function ProblemFetchQueue_task(item, cb){
 }, 1);
 
 /* Queue of submissions to judge them */
-JudgeQueue = new Queue(require('./judge'), 1);
+JudgeQueue = new Queue(require('./stages/judge'), 1);
 
 
 module.exports.SubmissionFetchQueue = SubmissionFetchQueue;

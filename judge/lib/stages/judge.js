@@ -1,8 +1,20 @@
+//Judge Stages
+//
+//	Stages:
+//		1. compile
+//		2. run
+//		3. evaluate
+//		4. send
+//
+//
+
+//
 var async = require('async');
-var compiler = require('./compiler');
+var compile = require('./compile');
+var Cache = require('../caches');
 var runner = require('./runner');
-var evaluater = require('./evaluater');
-var ajutils = require('./ajutils');
+// var evaluater = require('./evaluater');
+// var ajutils = require('../ajutils');
 
 /**
 Beware of nodejs object assignment. Object assignment is done by reference.
@@ -74,7 +86,7 @@ util._extend
 // 		fetchProblemTasks,
 // 		fetchTask,
 // 		function (cb){
-// 			compiler.compile(data, cb);
+// 			compile.compile(data, cb);
 // 		},
 // 		runTasks,
 // 	],
@@ -102,33 +114,49 @@ util._extend
 
 
 
-function redact(item){
-	ajutils.enqueueProblem(item);
-	ajutils.enqueueSubmission(item);
-}
-function send(item, log, callback){
-	callback();
-}
+// function redact(item){
+// 	ajutils.enqueueProblem(item);
+// 	ajutils.enqueueSubmission(item);
+// }
+// function send(item, log, callback){
+// 	callback();
+// }
 function fakerun(item, cb){
 	var log = {};
 	async.series([
+		// function (callback){
+		// 	setTimeout(callback, 3000);
+		// },
 		function (callback){
-			compiler.compile(item, log, callback);
+			console.log('Determining tasks');
+			var problem = Cache.ProblemTasksCache.get(item.contestCode + "_" + item.problemCode);
+			if(problem && problem.tasks){
+				item.tasks = problem.tasks;
+				callback();
+			} else {
+				log.TASKS_NOT_FOUND = true;
+				callback(new Error("Tasks not found !"));
+			}
 		},
 		function (callback){
+			console.log('compiling');
+			compile(item, log, callback);
+		},
+		function (callback){
+			console.log('running');
 			runner.run(item, log, callback);
 		},
-		function (callback){
-			evaluater.evaluate(item, log, callback);
-		},
-		function (callback){
-			send(item, log, callback);
-		}
+		// function (callback){
+		// 	evaluater.evaluate(item, log, callback);
+		// },
+		// function (callback){
+		// 	send(item, log, callback);
+		// }
 	],function (err){
 		if(err){
 			/* failed to judge */
 			console.log('failed to judge');
-			redact(item);
+			// redact(item);
 		}
 		console.log(err);
 		console.log(log);

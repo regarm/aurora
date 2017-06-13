@@ -61,8 +61,10 @@ function Cache(timeOut){
 	}
 	
 	//<a name="get"> </a>
-	self.get = function get(){
-		return cache[key];
+	self.get = function get(key){
+		if(cache[key]){
+			return cache[key].value;
+		} else return null;
 	}
 
 }

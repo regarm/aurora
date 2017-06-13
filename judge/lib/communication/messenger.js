@@ -1,7 +1,10 @@
 //Messenger between judge and client
-// 1. `judge` submission  
-
-// i.e. {type : 'judge', data : { submission : submission} }
+//
+// ********
+// 1. `judge` submission
+//		```{type : 'judge', data : { submission : submission} }```
+// 2. 'live' code and run
+//		```{type : 'live', data :{source:---,input:---,lang:---}}```
 
 var process = require('process');
 var API = require('../api');
@@ -38,6 +41,12 @@ function Restrictions(){
 			process.emitWarning('Incoming message did not satisfy submission restriction, Ignoring');
 		}
 	}
+
+	//Restriction on live code and run
+	this.liveRestriction = function liveRestriction(live, callback) {
+		//for now
+		callback();
+	}
 }
 
 var restriction = new Restrictions();
@@ -49,6 +58,11 @@ function messenger(ws, msg){
 			case "judge":
 				restriction.submissionRestriction(msg.data.submission, function (){
 					eventEmitter.emit('judge', ws, msg.data.submission);
+				});
+				break;
+			case "live":
+				restriction.liveRestriction(msg.data, function (){
+					eventEmitter.emit('live', ws, msg.data);
 				});
 				break;
 			case "rejudge":

@@ -1,0 +1,223 @@
+ http://tldp.org/LDP/abs/html/exitcodes.html
+var verdicts = [
+	{
+		"exitCode" : "0",
+		"color" : "blue",
+		"desc" : "Successfully executed"
+	},
+	{
+		"exitCode" : "1",
+		"color" : "blue",
+		"desc" : "Catchall for general errors"
+	},
+	{
+		"exitCode" : "2",
+		"color" : "blue",
+		"desc" : "Misuse of shell builtins (according to Bash documentation)"
+	},
+	{
+		"exitCode" : "126",
+		"color" : "blue",
+		"desc" : "Command invoked cannot execute"
+	},
+	{
+		"exitCode" : "127",
+		"color" : "blue",
+		"desc" : "Command not found"
+	},
+	{
+		"exitCode" : "128",
+		"color" : "blue",
+		"desc" : "Invalid argument to exit"
+	},
+	{
+		"exitCode" : "129",
+		"color" : "blue",
+		"desc" : "SIGHUP (128+1) Hangup (POSIX)"
+	},
+	{
+		"exitCode" : "130",
+		"color" : "blue",
+		"desc" : "SIGINT (128+2) Terminal interrupt (ANSI)"
+	},
+	{
+		"exitCode" : "131",
+		"color" : "blue",
+		"desc" : "SIGQUIT (128+3) Terminal quit (POSIX)"
+	},
+	{
+		"exitCode" : "132",
+		"color" : "blue",
+		"desc" : "SIGILL (128+4) Illegal instruction (ANSI)"
+	},
+	{
+		"exitCode" : "133",
+		"color" : "blue",
+		"desc" : "SIGTRAP (128+5) Trace trap (POSIX)"
+	},
+	{
+		"exitCode" : "134",
+		"color" : "blue",
+		"desc" : "SIGIOT (128+6) IOT Trap (4.2 BSD)"
+	},
+	{
+		"exitCode" : "135",
+		"color" : "blue",
+		"desc" : "SIGBUS (128+7) BUS error (4.2 BSD)"
+	},
+	{
+		"exitCode" : "136",
+		"color" : "green",
+		"mnemonic" : "SIGFPE",
+		"desc" : "SIGFPE (128+8) Floating point exception (ANSI)"
+	},
+	{
+		"exitCode" : "137",
+		"color" : "blue",
+		"desc" : "SIGKILL (128+9) Kill(can't be caught or ignored) (POSIX)"
+	},
+	{
+		"exitCode" : "138",
+		"color" : "blue",
+		"desc" : "SIGUSR1 (128+10) User defined signal 1 (POSIX)"
+	},
+	{
+		"exitCode" : "139",
+		"color" : "green",
+		"mnemonic" : "SIGSEGV",
+		"desc" : "SIGSEGV (128+11) Invalid memory segment access (ANSI)"
+	},
+	{
+		"exitCode" : "140",
+		"color" : "blue",
+		"desc" : "SIGUSR2 (128+12) User defined signal 2 (POSIX)"
+	},
+	{
+		"exitCode" : "141",
+		"color" : "blue",
+		"desc" : "SIGPIPE (128+13) Write on a pipe with no reader, Broken pipe (POSIX)"
+	},
+	{
+		"exitCode" : "142",
+		"color" : "blue",
+		"desc" : "SIGALRM (128+14) Alarm clock (POSIX)"
+	},
+	{
+		"exitCode" : "143",
+		"color" : "blue",
+		"desc" : "SIGTERM (128+15) Termination (ANSI)"
+	},
+	{
+		"exitCode" : "144",
+		"color" : "blue",
+		"desc" : "SIGSTKFLT (128+16) Stack fault"
+	},
+	{
+		"exitCode" : "145",
+		"color" : "blue",
+		"desc" : "SIGCHLD (128+17) Child process has stopped or exited, changed (POSIX)"
+	},
+	{
+		"exitCode" : "146",
+		"color" : "blue",
+		"desc" : "SIGCONT (128+18) Continue executing, if stopped (POSIX)"
+	},
+	{
+		"exitCode" : "147",
+		"color" : "blue",
+		"desc" : "SIGSTOP (128+19) Stop executing(can't be caught or ignored) (POSIX)"
+	},
+	{
+		"exitCode" : "148",
+		"color" : "blue",
+		"desc" : "SIGTSTP (128+20) Terminal stop signal (POSIX)"
+	},
+	{
+		"exitCode" : "149",
+		"color" : "blue",
+		"desc" : "SIGTTIN (128+21) Background process trying to read, from TTY (POSIX)"
+	},
+	{
+		"exitCode" : "150",
+		"color" : "blue",
+		"desc" : "SIGTTOU (128+22) Background process trying to write, to TTY (POSIX)"
+	},
+	{
+		"exitCode" : "151",
+		"color" : "blue",
+		"desc" : "SIGURG (128+23) Urgent condition on socket (4.2 BSD)"
+	},
+	{
+		"exitCode" : "152",
+		"color" : "blue",
+		"desc" : "SIGXCPU (128+24) CPU limit exceeded (4.2 BSD)"
+	},
+	{
+		"exitCode" : "153",
+		"color" : "green",
+		"mnemonic" : "SIGXFSZ",
+		"desc" : "SIGXFSZ (128+25) File size limit exceeded (4.2 BSD) ( You code is outputing too much data)."
+	},
+	{
+		"exitCode" : "154",
+		"color" : "blue",
+		"desc" : "SIGVTALRM (128+26) Virtual alarm clock (4.2 BSD)"
+	},
+	{
+		"exitCode" : "155",
+		"color" : "blue",
+		"desc" : "SIGPROF (128+27) Profiling alarm clock (4.2 BSD)"
+	},
+	{
+		"exitCode" : "156",
+		"color" : "blue",
+		"desc" : "SIGWINCH (128+28) Window size change (4.3 BSD, Sun)"
+	},
+	{
+		"exitCode" : "157",
+		"color" : "blue",
+		"desc" : "SIGIO (128+29) I/O now possible (4.2 BSD)"
+	},
+	{
+		"exitCode" : "158",
+		"color" : "blue",
+		"desc" : "SIGPWR (128+30) Power failure restart (System V)"
+	},
+	{
+		"exitCode" : "255",
+		"color" : "blue",
+		"desc" : "Exit status out of range"
+	},
+	{
+		"exitCode" : "256",
+		"mnemonic" : "CE",
+		"color" : "green",
+		"desc" : "Compile Time error (Your code did not satisfy the syntax of specified language)"
+	},
+	{
+		"exitCode" : "257",
+		"mnemonic" : "TLE",
+		"color" : "green",
+		"desc" : "Time Limit Exceeded (Your code did not complete execution in given time limit)"
+	},
+	{
+		"exitCode" : "258",
+		"mnemonic" : "WA",
+		"color" : "green",
+		"desc" :  "Wrong Answer (Your code did not output values as expected)."
+	},
+	{
+		"exitCode" : "259",
+		"mnemonic" : "AC",
+		"color" : "green",
+		"desc" : "Accepted (Output of your code is correct and your code has satisfied time limit, memory limit and other constraints)."
+	},
+	{
+		"exitCode" : "260",
+		"mnemonic" : "PE",
+		"color" : "green",
+		"desc" : "Presentation error (Your code's output may be correct but it's output format is not as specified."
+	}
+]
+
+console.log(verdicts["0"]);

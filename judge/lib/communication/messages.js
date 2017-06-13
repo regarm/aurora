@@ -1,12 +1,16 @@
 //Messages Implementation
 
 var ajutils = require('../ajutils');
+var live = require('../live');
 
 function messages(eventEmitter){
 	eventEmitter.on('judge', function(ws, submission){
 		ajutils.enqueueProblem(submission);
 		ajutils.enqueueSubmission(submission);
 	});
+	eventEmitter.on('live', function(ws, liveData){
+		live.run(ws, liveData);
+	})
 	eventEmitter.on('rejudge', function(ws, submission){
 		ajutils.enqueueProblem(submission);
 		ajutils.enqueueSubmission(submission);

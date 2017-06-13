@@ -1,72 +1,84 @@
 var async = require('async');
+var path = require('path');
+var conf = require('../../conf');
+const exec = require('child_process').exec;
+var process = require('process');
+var procfs = require('procfs-stats');
+var fs = require('fs');
 
-function runSubtask(subtask, cb){
-	var exe = path.join('submission', data.submission.submissionId);
+function runSubtask(item, log, subtasks, subtask, cb){
+	var exe = path.join('submission', item.submissionId);
 	var input = path.join('io', subtask.input);
 	var output = path.join('submission', subtask.input + '_' + subtask.output);
 	var cmd = exe + " < " + input + " > " + output;
 	var options = {
-		cwd: path.join(__dirname, 'runtime'),
+		cwd: conf.runtime_dir,
 		encoding: 'utf8',
 		shell: '/bin/bash',
+		timeout: subtasks.timeLimit * 1000,
 		env: null
 	}
-	console.log(cmd);
+	var startTime = process.hrtime();
 	var child = exec(cmd, options, function (error, stdout, stderr){
-		if(stderr){
-			subtask.RUN_TIME_ERROR = true;
-			subtask.RUN_TIME_ERROR_VAL = stderr;
-		} else {
-			if (error) {
-				console.error(`exec error: ${error}`);
+		var totalTime = process.hrtime(startTime);
+		if(error){
+			if(error.killed && error.signal === 'SIGTERM'){
+				log.TIME_LIMIT_EXCEED_ERROR = true;
+				log.TIME_LIMIT_EXCEED_ERROR_VAL = '';
+				return cb(new Error(error));
+			} else {
+				log.JUDGE_ERROR = true;
+				log.JUDGE_ERROR_VAL = 'Unknown error occured on judge while running';
 				return cb(error);
 			}
-			console.log('Ran successfull');
+		} else {
+			if(stderr){
+				log.RUN_TIME_ERROR = true;
+				log.RUN_TIME_ERROR_VAL = stderr;
+				return cb(null);
+			} else {
+				log.RUN_TIME_ERROR = false;
+				return cb(null);
+			}
 		}
-		return cb(null);
 	});
+	console.log(path.join('/proc', child.pid + '', 'status'));
+	fs.watch(path.join('/proc', child.pid + '', 'status'), function(err, val){
+		console.log('file watch');
+		console.log(err);
+		console.log(val);
+	})
+	child.on('exit', function () {
+		console.log();
+		console.log('exited');
+		console.log();
+	})
 }
 
-function runSubtasks(subtasks, cb){
-	async.each(subtasks.io, runSubtask, function (err){
+function runSubtasks(item, log, subtasks, cb){
+	async.each(subtasks.io, function (subtask, callback){
+		runSubtask(item, log, subtasks, subtask, callback);
+	}, function (err){
 		cb(err);
 	});
 }
 
 function runTasks(item, log, cb){
-	async.each(item.tasks, function(subtasks, callback){
-		runSubtasks(item)
+	async.each(item.tasks, function (subtasks, callback){
+		runSubtasks(item, log, subtasks, callback);
 	}, function (err){
 		cb(err);
 	});
 }
 
 function run(item, log, cb){
-	console.log('Running');
-	async.series([
-		function (callback){
-			api.fetchProblemTasks(item, function (err, response){
-				if(err){
-					return callback(err);
-				} else {
-					item.tasks = response;
-					callback(null);
-				}
-			});
-		},
-		function (callback){
-			runTasks(item, log, function (err){
-				if(err){
-					return callback(err);
-				} else {
-					callback();
-				}
-			})
+	runTasks(item, log, function (err){
+		if(err){
+			return cb(err);
+		} else {
+			cb(null);
 		}
-	],
-	function (err){
-		cb();
-	});
+	})
 }
 
 module.exports.run = run;

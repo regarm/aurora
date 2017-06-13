@@ -16,7 +16,6 @@ wss.on('connection', function connection(ws){
 		msg = JSON.parse(message);
 		messenger(ws, msg);
 	})
-
 });
 
 //Event emitted on error occurence.
