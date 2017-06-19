@@ -27,7 +27,12 @@
     "angular-smart-table": "^2.1.8",
     "prism": "prismjs#^1.6.0",
     "ckeditor": "#full/latest",
-    "angular-file-upload": "^2.5.0"
+    "angular-file-upload": "^2.5.0",
+    "angular-resource": "^1.6.4",
+    "angular-bootstrap": "^2.5.0",
+    "angular-websocket": "^2.0.0",
+    "angular-bootstrap-datetimepicker": "https://github.com/dalelotts/angular-bootstrap-datetimepicker.git#^1.1.4",
+    "moment": "^2.18.1"
   },
   "resolutions": {
     "angular-datatables": "~0.5.6"

@@ -8,14 +8,14 @@
 	<script src="/js/contest.js"></script>
 
 {{/contentFor}}
-<div ng-cloak ng-init="contest.contestCode='{{contestCode}}'">
+<div ng-cloak ng-init="contestCode='{{contestCode}}'">
 	<div ng-controller="ContestController">
 		<div>
 			<ol class="breadcrumb">
-			  <li class="breadcrumb-item">[[contest.contestCode]]</li>
+			  <li class="breadcrumb-item">[[contest.contestName]]</li>
 			</ol>
 		</div>
-		<div class="container view-container">
+		<div class="container">
 			<div class="col-md-8 aoj-view-left-pane aoj-contest-problems-display">
 				<table datatable="ng" class='row-border hover table table-hover'>
 			        <thead>

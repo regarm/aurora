@@ -57,8 +57,9 @@ var verdicts = [
 	},
 	{
 		"exitCode" : "134",
-		"color" : "blue",
-		"desc" : "SIGIOT (128+6) IOT Trap (4.2 BSD)"
+		"mnemonic" : "SIGABRT",
+		"color" : "green",
+		"desc" : "SIGABRT (128+6) IOT Trap (4.2 BSD)"
 	},
 	{
 		"exitCode" : "135",

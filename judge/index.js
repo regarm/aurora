@@ -13,8 +13,12 @@ wss.on('connection', function connection(ws){
 
 	//Event emitted on new incoming message
 	ws.on('message', function incoming(message){
-		msg = JSON.parse(message);
-		messenger(ws, msg);
+		try{
+			msg = JSON.parse(message);
+			messenger(ws, msg);
+		} catch(e){
+			console.log(e);
+		}
 	})
 });
 
@@ -28,6 +32,8 @@ wss.on('error', function error(err){
 //Emitted before the response headers are written to the socket as part of the handshake.
 wss.on('headers', function (headers){
 })
+
+require('./init');
 
 // Emitted when the underlying server has been bound.
 wss.on('listening', function (){

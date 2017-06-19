@@ -5,19 +5,19 @@
 		<div class="form-group row">
 			<label for="score" class="col-md-4 col-form-label">Score:</label>
 			<div class="col-md-8">
-				<input class="form-control input-sm" type="text" name="score" ng-model="subtask.score" required>
+				<input class="form-control input-sm" type="number" min="1" name="score" ng-model="subtask.score" required>
 			</div>
 		</div>
 		<div class="form-group row">
 			<label for="timeLimit" class="col-md-4 col-form-label">Time Limit:</label>
 			<div class="col-md-8">
-				<input class="form-control input-sm" type="text" name="timeLimit" ng-model="subtask.timeLimit" required>
+				<input class="form-control input-sm" type="number" min="1" name="timeLimit" ng-model="subtask.timeLimit" required>
 			</div>
 		</div>
 		<div class="form-group row">
 			<label for="memoryLimit" class="col-md-4 col-form-label">Memory Limit:</label>
 			<div class="col-md-8">
-				<input class="form-control input-sm" type="text" name="memoryLimit" ng-model="subtask.memoryLimit" required>
+				<input class="form-control input-sm" type="number" min="0" name="memoryLimit" ng-model="subtask.memoryLimit" required>
 			</div>
 		</div>
 		<div class="aoj-tasks-edit aoj-subtask-edit aoj-task-edit" ng-repeat="task in subtask.io">
@@ -25,7 +25,7 @@
 				<div ng-controller="UploadController" ng-init="type = 'input'">
 					<div class="col-md-2">
 						<label for="input" class="col-form-label">input:</label>
-						<a href="/file/[[task.input]]">#</a>
+						<a href="/api/contest/[[contestCode]]/problem/[[problemCode]]/file/[[task.input]]">#</a>
 					</div>
 					<div class="col-md-6">
 			        	<input type="file" name="input" nv-file-select uploader="uploader" ng-disabled="uploader.isUploading" ng-value="uploadFileValue"/>
@@ -53,7 +53,7 @@
 				<div ng-controller="UploadController">
 					<div class="col-md-2">
 						<label for="output" class="col-form-label">output:</label>
-						<a href="/file/[[task.output]]">#</a>
+						<a href="/api/contest/[[contestCode]]/problem/[[problemCode]]/file/[[task.output]]">#</a>
 					</div>
 					<div class="col-md-6">
 			        	<input type="file" name="output" nv-file-select uploader="uploader" ng-disabled="uploader.isUploading" ng-value="uploadFileValue"/>

@@ -28,11 +28,11 @@ var async = require('async');
 function api(){
 	var self = this;
 
-	fetch = function fetch(url, cb){
+	fetch = function fetch(url, method, cb){
 		var headers = {
 	      'Content-Type': 'application/json'
 	    };
-	    request.post({url: url, headers: headers}, function (err, httpres, body){
+	    request({method: method, url: url, headers: headers}, function (err, httpres, body){
 	    	if(err){
 	    		return cb(err);
 	    	}
@@ -121,6 +121,30 @@ function api(){
 						cb(null);
 					}
 				})
+			}
+		})
+	}
+
+	//<a name="fetchLangs" ></a>
+	self.fetchLangs = function fetchLangs(cb){
+		var url = conf.api + '/lang';
+		fetch(url, 'GET', function(err, response){
+			if(err){
+				return cb(err);
+			} else {
+				cb(null, response);
+			}
+		})
+	}
+	
+	//<a name="fetchLangs" ></a>
+	self.fetchLang = function fetchLang(lang, cb){
+		var url = conf.api + '/lang/' + lang;
+		fetch(url, 'GET', function(err, response){
+			if(err){
+				return cb(err);
+			} else {
+				cb(null, response);
 			}
 		})
 	}

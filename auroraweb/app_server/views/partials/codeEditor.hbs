@@ -1,0 +1,17 @@
+<div ng-controller="CodeEditorController" class="container view-container aoj-code-editor col-md-10" ngsf-fullscreen>
+	<div class="row">
+		<div class="code-preference-bar">
+			<div class="pull-left">
+				<select data-ng-model="selectedLang" ng-change="setLang()" data-ng-options="option.name for option in langs track by option._id"></select>
+			</div>
+			<div class="pull-right">
+				<select data-ng-model="selectedTheme" ng-change="setTheme()" data-ng-options="option.themeName for option in themeData track by option.id"></select>
+				<button ngsf-toggle-fullscreen><i class="fa fa-expand" aria-hidden="true"></i></button>
+				<button class="aoj-button btn-sm aoj-button-white" id="submit" ng-click="submit()">Submit</button>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="editor" ui-ace="{onLoad: aceLoaded}" ng-model="code"></div>
+	</div>
+</div>

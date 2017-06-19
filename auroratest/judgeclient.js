@@ -7,7 +7,7 @@ ws.on('open', function open() {
 	var submission = {
 		contestCode: "PRACTICE",
 		problemCode: "TEST",
-		submissionId: "589d935fb6f2f81ca0789e70"
+		submissionId: "5938fe308fbe910a01c9bdce"
 
 	};
 	var data = {type: "judge", data: {submission: submission}};

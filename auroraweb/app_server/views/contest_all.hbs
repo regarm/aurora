@@ -1,0 +1,37 @@
+{{#contentFor 'page-req'}}
+	<script src="/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+	<script src="/bower_components/angular-datatables/dist/angular-datatables.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/bower_components/angular-datatables/dist/css/angular-datatables.min.css">
+	<script src="/bower_components/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/bower_components/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.min.css">
+	{{!-- // <script src="/bower_components/angular-smart-table/dist/smart-table.min.js"></script> --}}
+	<script src="/js/contest_all.js"></script>
+
+{{/contentFor}}
+<div ng-cloak>
+	<div ng-controller="ContestAllController">
+		<div>
+			<ol class="breadcrumb">
+			  <li class="breadcrumb-item">Contests</li>
+			</ol>
+		</div>
+		<div class="container">
+			<div class="col-md-8 aoj-view-left-pane aoj-contest-problems-display">
+				<table  class='row-border hover table table-hover'>
+			        <thead>
+				        <tr>
+				        	<th>Code</th>
+				            <th>Name</th>
+				            <th>Start time</th>
+				            <th>End time</th>
+				        </tr>
+			        </thead>
+			        <tbody>
+				        <tr contest-list-display ng-repeat="contest in contests" contest-code="contest.contestCode"> </tr>
+			        </tbody>
+			    </table>
+			</div>
+			<div class="col-md-3 col-md-offset-1 aoj-view-right-pane"></div>
+		</div>
+	</div>
+</div>

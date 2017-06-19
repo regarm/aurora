@@ -3,6 +3,6 @@
 */
 
 exports = module.exports = function (app){
-	app.use('/api', require('./apir'));
-	app.use('/', require('./viewsr'));
+	app.use('/api', require('./api'));
+	app.use('/', require('./view'));
 }

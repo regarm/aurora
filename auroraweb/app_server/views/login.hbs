@@ -5,8 +5,8 @@
 	<form name="loginForm" class='form-horizontal' role="form" novalidate ng-submit="submit()">
 		<fieldset>
 			<legend>Log In</legend>
-			<div class="alert alert-[[flash.getMessage().type]]" ng-show="flash.getMessage()">
-			  [[flash.getMessage().msg]]
+			<div class="alert alert-danger" ng-show="msg">
+			[[msg]]
 			</div>
 			<div class="row aoj-block aoj-block-dir-vert aoj-block-align-vert-center">
 				<div class='form-group has-feedback col-md-4 has-feedback-left'>

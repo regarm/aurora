@@ -1,16 +1,12 @@
-var aojApp = angular.module('aojApp', []);
-aojApp.config(function($interpolateProvider){
- $interpolateProvider.startSymbol('[[').endSymbol(']]');
-});
-aojApp.run(function($rootScope, $http, $window, flash){
-	$rootScope.name = 'Aurora Online Judge';
-  console.log('Fetching session ...');
-  fetchSession($rootScope, $http, flash);
+aojApp.run(function($rootScope, $http, $window, flash, SessionService, Store){
+	Store.name = 'Aurora Online Judge';
+  $rootScope.session = Store.getSession;
+  Store.setSession(SessionService.get());
   $rootScope.logout = function (){
-    console.log('Trying logging out');
-    logout($rootScope, $http, $window, flash);
+    SessionService.delete();
+    Store.setSession(SessionService.get());
   }
-  $rootScope.scoreSum = function scoreSum(tasks){
+  Store.scoreSum = function scoreSum(tasks){
     if(!tasks) return 0;
     var total = 0;
     for(count=0;count<tasks.length;count++){

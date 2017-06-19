@@ -8,11 +8,16 @@
 
   <!-- Global Loads -->
   <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="/bower_components/moment/moment.js"></script>
+  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
   <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="/bower_components/angular/angular.js"></script>
+  <script src="/bower_components/angular-resource/angular-resource.js"></script>
+  <script src="/js/aojApp.js"></script>
+  <script src="/js/api.js"></script>
   <script src="/js/jumpstart.js"></script>
-  <script src="/js/apiAccessTools.js"></script>
+  <!-- <script src="/js/apiAccessTools.js"></script> -->
   <link rel="stylesheet" type="text/css" href="/css/theme.css">
   <link rel="stylesheet" type="text/css" href="/css/sticky-footer.css">
   {{!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> --}}
@@ -22,10 +27,10 @@
 
 </head>
 <body>
-  <div class="aoj-container container" ng-cloak>
+  <div class="aoj-container col-md-10 col-md-offset-1" ng-cloak>
     <div class="aoj-header">
-      <div class="container aoj-user-nav">
-        <div class="row pull-right" ng-show="!session.loggedIn">
+      <div class="aoj-user-nav">
+        <div class="row pull-right" ng-show="!session().loggedIn">
           <a href="/login" class="btn btn-primary aoj-button aoj-button-green btn-sm" role="button" aria-disabled="true">Login</a>
           <a href="/register" class="btn btn-primary aoj-button aoj-button-white btn-sm" role="button" aria-disabled="true">Sign Up</a>
         </div>
@@ -44,14 +49,14 @@
 
           <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="/PRACTICE">Problems</a></li>
               <li><a href="/contests">Contests</a></li>
+              <li><a href="/run">Run</a></li>
               <li><a href="/submissions">Submissions</a></li>
-              <li class="dropdown" ng-show="session.loggedIn">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">[[session.handle]]
+              <li class="dropdown" ng-show="session().loggedIn">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">[[session().handle]]
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="/profile/[[session.handle]]">Profile</a></li>
+                  <li><a href="/profile/[[session().handle]]">Profile</a></li>
                   <li><a ng-click="logout()">Log out</a></li>
                 </ul>
               </li>
@@ -60,7 +65,7 @@
         </div>
       </nav>
     </div>
-    <div class="aoj-body">
+    <div class="container aoj-body">
       {{{body}}}
     </div>
   </div>

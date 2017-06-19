@@ -1,0 +1,52 @@
+{{#contentFor 'page-req'}}
+	<script src="/bower_components/angular-route/angular-route.js"></script>
+	<script src="/js/setting.js"></script>
+{{/contentFor}}
+<div ng-controller="SettingController">
+	<div>
+		<ol class="breadcrumb">
+		  <li class="breadcrumb-item"><a href="/setting">Aurora Setting</a></li>
+		</ol>
+	</div>
+	<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar1" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbar1">
+        <ul class="nav navbar-nav navbar-left">
+          <li><a href="#!lang" ng-class="{active: isActive('/lang')}">Languages</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  
+  <div ng-view></div>
+  <script type="text/ng-template" id="lang.htm">
+    <uib-accordion close-others="true">
+      <div uib-accordion-group ng-repeat="lang in langs" is-open="status.open">
+        <uib-accordion-heading >
+          [[lang.name]]
+          <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+        </uib-accordion-heading>
+        <div lang-display ng-init="loading=false;status=''" name="lang.name" lang="lang"> 
+          <div class="form-group col-md-5">
+            <div ng-repeat="(attr, value) in lang" class="input-group">
+              <div class="input-group-addon">[[attr]]</div>
+              <input class="form-control input-xs" style="background-color:white;color:black" type="text" ng-model="lang[attr]" ng-disabled="attr==='name'">
+            </div>
+          </div>
+          <button ng-click="updateAction(lang)">update</button>
+          <div class="loader pull-left" ng-show="loading" style="padding-left: 10px">loading</div>
+          <div class="pull-left"><span style="padding-left: 10px" ng-bind="status"></span></div>
+        </div>
+      </div>
+    </uib-accordion>
+	</script>
+</div>

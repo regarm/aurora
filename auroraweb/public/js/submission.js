@@ -1,4 +1,3 @@
-aojApp.controller('SubmissionController', function($scope, $http, $sce, flash){
-	$scope.flash = flash;
-	fetchSolution($scope, $http, $sce, flash);
+aojApp.controller('SubmissionController', function($scope, SubmissionService){
+	$scope.submission = SubmissionService.get({problemCode : $scope.problemCode, contestCode : $scope.contestCode, submissionId : $scope.submissionId});
 })

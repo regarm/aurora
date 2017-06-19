@@ -1,0 +1,33 @@
+{{#contentFor 'page-req'}}
+	<script type="text/javascript" src="/bower_components/ace-builds/src-min-noconflict/ace.js"></script>
+	<script type="text/javascript" src="/bower_components/angular-ui-ace/ui-ace.js"></script>
+	<link rel="stylesheet" type="text/css" href="/css/code-editor.css">
+	<script src="/bower_components/screenfull/dist/screenfull.js"></script>
+	<script src="/bower_components/angular-screenfull/dist/angular-screenfull.min.js"></script>
+	<script src="/js/code_editor.js"></script>
+	<script src="/js/run.js"></script>
+	<script src="/bower_components/angular-websocket/dist/angular-websocket.min.js"></script>
+{{/contentFor}}
+<div ng-controller="RunController">
+	<div class="row">
+		<input type="text" ng-model="readyStateClass" ng-disabled="true" ng-hide="true">
+		<div ng-class="readyStateClass" class="alert col-md-4 col-md-offset-4">[[readyState]]</div>
+	</div>
+	{{> codeEditor}}
+	<div class="row col-md-10">
+		<div class="form-group col-md-6">
+			<label for="input">Input : </label>
+			<textarea class="col-md-6 form-control" ng-model="input" rows="3" id="input"></textarea>
+		</div>
+		<div class="form-group col-md-6">
+			<label for="output">Output : </label>
+			<textarea class="col-md-6 form-control" ng-model="output" rows="3" id="output" ng-readonly="true"></textarea>
+		</div>
+	</div>
+	<div class="row col-md-6">
+		<div class="form-group col-md-12">
+			<label for="debug">Debug : </label>
+			<textarea class="col-md-6 form-control" ng-model="debug" rows="3" id="debug"></textarea>
+		</div>
+	</div>
+</div>

@@ -1,7 +1,6 @@
 aojApp = angular.module('childApp', ['datatables']);
-aojApp.controller('ContestController', function($scope, $http, $window, flash){
-	$scope.flash = flash;
-	fetchContestProblemsList($scope, $http, flash);
+aojApp.controller('ContestController', function($scope, ContestService){
+	$scope.contest = ContestService.get({contestCode : $scope.contestCode});
 })
 aojApp.directive('problemInfoDisplay', function() {
 	return {
@@ -11,18 +10,14 @@ aojApp.directive('problemInfoDisplay', function() {
 			contestCode: "=",
 			scoreSum: "="
 		},
-		controller: function ($scope, $http, flash){
-			$scope.problem = {};
-			$scope.problem.problemCode = $scope.problemCode;
-			$scope.contest = {};
-			$scope.contest.contestCode = $scope.contestCode;
-			fetchProblemName($scope, $http, flash);
-			fetchProblemTasks($scope, $http, flash);
+		controller: function ($scope, ContestService, ProblemService){
+			$scope.problem = ProblemService.get({contestCode : $scope.contestCode, problemCode : $scope.problemCode});
+			$scope.contest = ContestService.get({contestCode : $scope.contestCode});
 		},
 		replace: true,
 		template: '<tr> \
-		<td><a href="/[[contest.contestCode]]/[[problem.problemCode]]">[[problem.problemCode]]</a></td>\
-		<td><a href="/[[contest.contestCode]]/[[problem.problemCode]]">[[problem.problemName]]</a></td> \
+		<td><a href="/contest/[[contest.contestCode]]/problem/[[problem.problemCode]]">[[problem.problemCode]]</a></td>\
+		<td><a href="/contest/[[contest.contestCode]]/problem/[[problem.problemCode]]">[[problem.problemName]]</a></td> \
 		<td>[[scoreSum(problem.tasks)]]</td> \
 		<td>22/22</td>\
 		</tr>',

@@ -30,8 +30,7 @@ select:-moz-focusring
 /** aoj-container */
 #aoj-container
 {
-    position: relative;
-
+    
     min-height: 100%;
 }
 
@@ -56,6 +55,7 @@ select:-moz-focusring
     font-size: 20px;
     color: #5A3300;
 }
+
 .navbar.navbar-default
 {
     margin-top: 1px;

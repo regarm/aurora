@@ -5,13 +5,13 @@
 	{{!-- // <script src="/bower_components/prism/plugins/line-numbers/prism-line-numbers.min.js"></script> --}}
 	{{!-- <link rel="stylesheet" type="text/css" href="/bower_components/prism/plugins/line-numbers/prism-line-numbers.css"> --}}
 {{/contentFor}}
-<div ng-cloak ng-init="problem.problemCode='{{problemCode}}';contest.contestCode='{{contestCode}}';submission.submissionId='{{submissionId}}'">
+<div ng-cloak ng-init="problemCode='{{problemCode}}';contestCode='{{contestCode}}';submissionId='{{submissionId}}'">
 	<div ng-controller="SubmissionController">
 		<div>
 			<ol class="breadcrumb">
-			  <li class="breadcrumb-item"><a href="/[[contest.contestCode]]">[[contest.contestCode]]</a></li>
-			  <li class="breadcrumb-item"><a href="/PRACTICE/[[problem.problemCode]]">[[problem.problemCode]]</a></li>
-			  <li class="breadcrumb-item">[[submission.submissionId]]</li>
+			  <li class="breadcrumb-item"><a href="/contest/[[contestCode]]">[[contestCode]]</a></li>
+			  <li class="breadcrumb-item"><a href="/contest/[[contestCode]]/problem/[[problemCode]]">[[problemCode]]</a></li>
+			  <li class="breadcrumb-item">[[submissionId]]</li>
 			</ol>
 		</div>
 		<div class="container view-container">

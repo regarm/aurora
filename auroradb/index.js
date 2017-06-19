@@ -7,6 +7,8 @@ exports = module.exports = {
 	contest: require('./models/contest'),
 	submission: require('./models/submission'),
 	lang: require('./models/lang'),
-	io: require('./models/io'),
+	file: require('./models/file'),
+	counter: require('./models/counter'),
+	setting: require('./models/setting'),
 	conf: conf
 }

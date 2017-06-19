@@ -3,21 +3,30 @@ var async = require('async');
 var {ObjectId} = require('mongodb');
 
 exports = module.exports = {
-	getLang: function getLang(lang, cb){
+	lang_get_one: function lang_get_one(name, cb){
 		MongoPool.getInstance(function(err, db){
 			if(err) return cb(err);
-			db.collection('lang').findOne({_id: ObjectId(lang.langId)}, function (err, document){
+			db.collection('lang').findOne({name: name}, function (err, lang){
 				if(err) return cb(err);
-				return cb(null, document);
+				return cb(null, lang);
 			})
 		})
 	},
-	getLangs: function getLangs(cb){
+	lang_get_all: function lang_get_all(cb){
 		MongoPool.getInstance(function(err, db){
 			if(err) return cb(err);
-			db.collection('lang').aggregate([{$match: {}}, {$project: {_id: 0, langId: "$_id", name: 1, editor_mode: 1, syntax_mode: 1}}], function (err, document){
+			db.collection('lang').find({}, {name:1}).toArray(function (err, langs){
 				if(err) return cb(err);
-				return cb(null, document);
+				return cb(null, langs);
+			})
+		})
+	},
+	lang_update_one: function lang_update_one(name, updateSet, cb){
+		MongoPool.getInstance(function(err, db){
+			if(err) return cb(err);
+			db.collection('lang').updateOne({name: name}, {$set: updateSet}, function (err, document){
+				if(err) return cb(err);
+				return cb(null);
 			})
 		})
 	},

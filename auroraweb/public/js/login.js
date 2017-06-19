@@ -1,23 +1,17 @@
-aojApp.controller('LoginController', function($scope, $http, $window, flash){
-	$scope.flash = flash;
+aojApp.controller('LoginController', function($scope, $window, SessionService, Store){
 	$scope.submit = function(){
 		var data = {handle: $scope.login.handle, password: $scope.login.password};
-		$http.post('/api/login', data)
-		.then(
-			function success(response){
-				if(response.data.authorize.loggedIn){
-					flash.setMessage({msg: response.data.msg, type: response.data.msgType});
-					$window.location.href = '/';
-				} else {
-					flash.setMessage({msg: response.data.msg, type: response.data.msgType});
-				}
-				console.log(response.data);
-			},
-			function err(response){
-				flash.setMessage({msg: 'Unknown error occured', type: 'warning'});
-				console.log(response.status);
+		SessionService.save(data).$promise.then(function (response){
+			$window.location.href = '/';
+		}, function (err){
+			if(err.status === 400){
+				$scope.msg = 'Already logged in';
+			} else if(err.status === 401){
+				$scope.msg = 'Invalid Credentials';
+			} else {
+				$scope.msg = 'Unknown error occured';
 			}
-		)
+		});
 	}
 })
 aojApp.directive('ensureExists', function ($http) {

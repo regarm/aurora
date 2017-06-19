@@ -1,6 +1,19 @@
 const exec = require('child_process').exec;
-function execute(interpreter, executable, inputTarget, outputTarget, errorTarget, timeLimit, callback){
-	var cmd = "ulimit -s 16384 -f 131072; " + interpreter + " " + executable + " < " + inputTarget + " > " + outputTarget + " 2> " + errorTarget;
+var util = require('util');
+var Cache = require('../caches');
+var ulimit_file_size_template = "ulimit -f %s;";
+var ulimit_stack_size_template = "ulimit -s %s;";
+function execute(lang, space, executable, inputTarget, outputTarget, errorTarget, timeLimit, fileSizeLimit, stackSizeLimit, callback){
+	console.log(space);
+	var cmd = util.format(ulimit_file_size_template, fileSizeLimit);
+	cmd = cmd + util.format(ulimit_stack_size_template, stackSizeLimit);
+	var execute_template = Cache.LangsCache.get(lang).execute_template;
+	var interpreter = Cache.LangsCache.get(lang).interpreter;
+	if(lang == 'JAVA'){
+		cmd = cmd + util.format(execute_template, interpreter, space, executable, inputTarget, outputTarget, errorTarget);
+	} else {
+		cmd = cmd + util.format(execute_template, interpreter, executable, inputTarget, outputTarget, errorTarget);
+	}
 	var options = {
 		encoding: 'utf8',
 		shell: '/bin/bash',
@@ -8,6 +21,7 @@ function execute(interpreter, executable, inputTarget, outputTarget, errorTarget
 		killSignal: 'SIGKILL',
 		env: null
 	}
+	console.log(cmd);
 	var log = {};
 	var startTime = process.hrtime();
 	var child = exec(cmd, options, function (error, stdout, stderr){
@@ -31,7 +45,11 @@ function execute(interpreter, executable, inputTarget, outputTarget, errorTarget
 				log.VERDICT = 'SIGXFSZ';
 				log.DISPLAY_VERDICT = 'RTE(SIGXFSZ)';
 				return callback(log);
-			} else {
+			} else if(log.exitCode == 134){
+				log.VERDICT = 'SIGABRT';
+				log.DISPLAY_VERDICT = 'RTE(SIGABRT)';
+				return callback(log);
+			} else{
 				log.VERDICT = 'NZEC';
 				log.DISPLAY_VERDICT = 'RTE(NZEC)';
 				return callback(log);
@@ -44,14 +62,3 @@ function execute(interpreter, executable, inputTarget, outputTarget, errorTarget
 
 
 module.exports = execute;
-
-// var interpreter = "";
-// var executable = "/home/butterfly/test/sol";
-// var inputTarget = "/home/butterfly/test/input.txt";
-// var outputTarget = "/home/butterfly/test/output.txt";
-// var errorTarget = "/home/butterfly/test/error.txt";
-// var timeLimit = 10;
-// execute(interpreter, executable, inputTarget, outputTarget, errorTarget, timeLimit, function (err, log){
-// 	console.log(err);
-// 	console.log(log);
-// })

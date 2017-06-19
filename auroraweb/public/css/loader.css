@@ -12,6 +12,13 @@ https://www.w3schools.com/howto/howto_css_loader.asp
   -webkit-animation: spin 1s linear infinite;
   animation: spin 1s linear infinite;
 }
+.loader-sm{
+  border: 3px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 3px solid #555;
+  width: 20px;
+  height: 20px;
+}
 
 @-webkit-keyframes spin {
   0% { -webkit-transform: rotate(0deg); }

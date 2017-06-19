@@ -14,7 +14,7 @@ body
 .aoj-footer
 {
     position: absolute;
-    bottom: 0;
+    bottom: -100px;
 
     width: 100%;
     /* Set the fixed height of the footer here */
