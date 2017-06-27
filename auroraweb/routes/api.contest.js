@@ -8,6 +8,8 @@ var middle = require('../app_server/middleware/index');
 
 
 router.get('/', api.contest_get_all);
+
+router.use('/:contestCode', middle.contestShouldExist);
 router.get('/:contestCode', api.contest_get_one);
 router.put('/:contestCode', api.contest_update_one);
 
@@ -15,7 +17,6 @@ router.put('/:contestCode', api.contest_update_one);
 // router.post('/', api.contest_post);
 // router.post('/', api.contest_put);
 
-router.use('/:contestCode', middle.contestShouldExist);
 router.use('/:contestCode/problem', require('./api.contest.problem.js'));
 
 router.use(function(err, req, res, next) {

@@ -84,13 +84,13 @@ aojApp.directive('submissionListDisplay', function() {
 			<td class="aoj-submission-bar-id"> <a href="/contest/[[submission.contestCode]]/problem/[[submission.problemCode]]/submission/[[submission.submissionId]]">[[submission.submissionId | limitTo : 7]]... </a> </td>\
 			<td> [[submission.creationTime | date : "EEE, d MMM yyyy, hh:mm:ss a (IST)" : \'+530\']] </td> \
 			<td> [[submission.handle]] </td>\
-			<td> <a href="/[[submission.contestCode]]">[[submission.contestCode]]</a> / <a href="/[[submission.contestCode]]/[[submission.problemCode]]">[[submission.problemCode]]</a></td>\
+			<td> <a href="/contest/[[submission.contestCode]]">[[submission.contestCode]]</a> / <a href="/contest/[[submission.contestCode]]/problem/[[submission.problemCode]]">[[submission.problemCode]]</a></td>\
 			<td> [[submission.overAllResult.verdict]] </td>\
 			<td> [[submission.overAllResult.score]] </td>\
 			<td> [[submission.overAllResult.timeTaken]] </td>\
 			<td> [[submission.overAllResult.memoryTaken]] </td>\
-			<td> [[lang.name]] </td>\
-			<td> <a href="/[[submission.contestCode]]/[[submission.problemCode]]/[[submission.submissionId]]"> view </a> </td>\
+			<td> [[submission.lang]] </td>\
+			<td> <a href="/contest/[[submission.contestCode]]/problem/[[submission.problemCode]]/submission/[[submission.submissionId]]"> view </a> </td>\
 		</tr>',
 	};
 })

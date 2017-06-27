@@ -8,9 +8,9 @@ var middle = require('../app_server/middleware/index');
 
 router.get('/', api.submission_get_all);
 router.post('/', api.submission_create_one);
+router.use('/:submissionId', middle.submissionShouldExist);
 router.get('/:submissionId', api.submission_get_one);
 
-// router.use(middle.submissionShouldExist);
 // router.post('/getSolution', api.getSolution);
 // router.post('/getSubmissionSubmittedTime', api.getSubmissionSubmittedTime);
 // router.post('/getSubmissionOverAllResult', api.getSubmissionOverAllResult);

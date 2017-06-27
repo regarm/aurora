@@ -7,6 +7,7 @@ var api = require('../app_server/controllers/api');
 var middle = require('../app_server/middleware/index');
 
 
+router.use('/:problemCode', middle.problemShouldExist);
 router.get('/:problemCode', api.problem_get_one);
 router.put('/:problemCode', api.problem_update_one);
 
@@ -22,14 +23,4 @@ router.get('/:problemCode/file/:fileId', api.file_get_one);
 router.post('/:problemCode/file', api.file_upload_one);
 
 router.use('/:problemCode/submission', require('./api.contest.problem.submission.js'));
-
-router.use(function(err, req, res, next) {
-	//bypassed
-	if((!err) || (err && err.status === 404)){
-		err = null;
-		next();
-	} else{
-		next(err);
-	}
-});
 module.exports = router;
