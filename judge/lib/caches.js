@@ -1,18 +1,16 @@
 //Caches for their purposes
 
 var cache = require('./dataType/cache');
-var api = require('./api');
 
 
 /* Queue of submissions to fetch them */
-SubmissionStatusCache = new cache(10000);
+SubmissionCache = new cache(10000);
 
-/* Queue of problems to fetch problem tasks */
-ProblemTasksCache = new cache(10000);
+/* Cache for languages (Only to be directly used by api.js and services.js)*/
+LangCache = new cache();
 
-/* Cache for languages */
-LangsCache = new cache();
+/* Cache for languages (Only to be used directly by api.js and services.js)*/
+ProblemCache = new cache(60000);
 
-module.exports.SubmissionStatusCache = SubmissionStatusCache;
-module.exports.ProblemTasksCache = ProblemTasksCache;
-module.exports.LangsCache = LangsCache;
+module.exports.SubmissionCache = SubmissionCache;
+module.exports.LangCache = LangCache;

@@ -3,18 +3,20 @@ var Caches = require('./caches');
 var api = require('./api');
 
 function enqueueProblem(submission){
-	var problem = {};
-	problem.problemCode = submission.problemCode;
-	problem.contestCode = submission.contestCode;
-	Queues.ProblemFetchQueue.enqueue(problem);
+	if(submission && submission.problemCode && submission.contestCode){
+		var problem = {};
+		problem.problemCode = submission.problemCode;
+		problem.contestCode = submission.contestCode;
+		Queues.ProblemFetchQueue.enqueue(problem);
+	}
 }
 
-function enqueueSubmission(sub){
-	JudgeQueue.enqueue(sub);
+function enqueueSubmission(submission){
+	JudgeQueue.enqueue(submission);
 	var submission = {};
-	submission.problemCode = sub.problemCode;
-	submission.contestCode = sub.contestCode;
-	submission.submissionId = sub.submissionId;
+	submission.problemCode = submission.problemCode;
+	submission.contestCode = submission.contestCode;
+	submission.submissionId = submission.submissionId;
 	SubmissionFetchQueue.enqueue(submission);
 }
 

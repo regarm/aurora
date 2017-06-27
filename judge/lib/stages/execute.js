@@ -4,11 +4,10 @@ var Cache = require('../caches');
 var ulimit_file_size_template = "ulimit -f %s;";
 var ulimit_stack_size_template = "ulimit -s %s;";
 function execute(lang, space, executable, inputTarget, outputTarget, errorTarget, timeLimit, fileSizeLimit, stackSizeLimit, callback){
-	console.log(space);
 	var cmd = util.format(ulimit_file_size_template, fileSizeLimit);
 	cmd = cmd + util.format(ulimit_stack_size_template, stackSizeLimit);
-	var execute_template = Cache.LangsCache.get(lang).execute_template;
-	var interpreter = Cache.LangsCache.get(lang).interpreter;
+	var execute_template = lang.execute_template;
+	var interpreter = lang.interpreter;
 	if(lang == 'JAVA'){
 		cmd = cmd + util.format(execute_template, interpreter, space, executable, inputTarget, outputTarget, errorTarget);
 	} else {

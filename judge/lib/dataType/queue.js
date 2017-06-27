@@ -12,16 +12,11 @@
 
 
 //
-function Queue(param_task, concurrency){
-	if(typeof param_task !== 'function'){
-		throw new Error('Queue constructor received a non-function type task.')
-	}
-
+function Queue(concurrency){
 	var self = this;
 	//Queue Store using `DLL`
 	var store = new (require('./DLL'))();
-	//Task Executed on each item
-	var task = param_task;
+
 	//Concurrency of workers
 	var conc = concurrency;
 
@@ -43,11 +38,10 @@ function Queue(param_task, concurrency){
 
 
 
-
 	//Add an item in queue.
 	//<a name="enqueue"></a>
-	self.enqueue = function enqueue(item){
-		store.append(item);
+	self.enqueue = function enqueue(item, task){
+		store.append({item: item, task: task});
 		setImmediate(processItem.bind(self));
 	}
 
@@ -67,7 +61,9 @@ function Queue(param_task, concurrency){
 			workers += 1;
 			var item = front();
 			pop_front();
-			task(item, endWorker.bind(self));
+			if(typeof item.task === 'function'){
+				item.task(item.item, endWorker.bind(self));
+			}
 		}
 	}
 	

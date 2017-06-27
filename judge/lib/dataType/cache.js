@@ -1,11 +1,12 @@
 //Time bounded memory cache (Inspired by : [node-cache](https://github.com/ptarjan/node-cache))
-//
+//Default timeOut is infinity.
 //
 // ********
 // 1. [put](#put)
 // 2. [del](#del)
 // 3. [clear](#clear)
 // 4. [get](#get)
+// 5. [empty](#empty)
 // ********
 
 
@@ -13,6 +14,7 @@
 function Cache(timeOut){
 	var self = this;
 	var cache = Object.create(null);
+	var size = 0;
 
 	if (typeof timeOut !== 'undefined' && (typeof timeOut !== 'number' || isNaN(timeOut) || timeOut <= 0)) {
 		throw new Error('Cache timeout must be a positive number');
@@ -20,12 +22,8 @@ function Cache(timeOut){
 
 	//<a name="put"> </a>
 	self.put = function put(key, val){
-		var oldRecord = cache[key];
-		if(oldRecord){
-			if(oldRecord.timeout){
-				clearTimeout(oldRecord.timeout);
-			}
-			delete oldRecord;
+		if(cache[key]){
+			self.del(key);
 		}
 		var record = {
 			value: val,
@@ -37,6 +35,7 @@ function Cache(timeOut){
 			}, timeOut);
 		}
 
+		++size;
 		cache[key] = record;
 	}
 
@@ -46,6 +45,7 @@ function Cache(timeOut){
 		if(oldRecord && oldRecord.timeout){
 			clearTimeout(cache[key].timeout);
 		}
+		--size;
 		delete cache[key];
 	}
 
@@ -57,6 +57,7 @@ function Cache(timeOut){
 			}
 		}
 		delete cache;
+		size = 0;
 		cache = Object.create(null);
 	}
 	
@@ -65,6 +66,11 @@ function Cache(timeOut){
 		if(cache[key]){
 			return cache[key].value;
 		} else return null;
+	}
+
+	//<a name="empty"></a>
+	self.empty = function empty(){
+		return (size == 0);
 	}
 
 }

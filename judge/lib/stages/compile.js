@@ -8,7 +8,7 @@ var fs = require('fs');
 
 
 function compile(lang, space, sourceTarget, exeTarget, callback){
-	var compile_template = Cache.LangsCache.get(lang).compile_template;
+	var compile_template = lang.compile_template;
 	if(compile_template === null || compile_template === undefined || typeof compile_template !== 'string'){
 		//May be language does not have a compiler
 		return callback({});

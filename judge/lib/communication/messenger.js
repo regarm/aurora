@@ -7,8 +7,7 @@
 //		```{type : 'live', data :{source:---,input:---,lang:---}}```
 
 var process = require('process');
-var API = require('../api');
-var api = new API();
+var api = require('../api');
 
 var eventEmitter = new (require('events')).EventEmitter();
 //messages
@@ -26,25 +25,13 @@ function Restrictions(){
 		}
 	}
 
-	//Restriction on submission
-	this.submissionRestriction = function submissionRestriction(submission, callback){
-		if(submission && submission.submissionId && submission.problemCode && submission.contestCode){
-			api.fetchSolution(submission, function (err){
-				if(err) {
-					callback(err);
-				} else {
-					callback();
-				}
-				
-			})
-		} else {
-			process.emitWarning('Incoming message did not satisfy submission restriction, Ignoring');
-		}
-	}
-
 	//Restriction on live code and run
 	this.liveRestriction = function liveRestriction(live, callback) {
 		//for now
+		callback();
+	}
+
+	this.submissionRestriction = function submissionRestriction(live, callback){
 		callback();
 	}
 }
@@ -57,7 +44,8 @@ function messenger(ws, msg){
 		switch(msg.type){
 			case "judge":
 				restriction.submissionRestriction(msg.data.submission, function (){
-					eventEmitter.emit('judge', ws, msg.data.submission);
+					console.log('passed');
+					// eventEmitter.emit('judge', ws, msg.data.submission);
 				});
 				break;
 			case "live":
